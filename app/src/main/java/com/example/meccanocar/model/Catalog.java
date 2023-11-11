@@ -74,7 +74,7 @@ public class Catalog {
 
 
                         // On crée une nouvelle catégorie
-                        Category category = new Category(categoryName, imageUrl);
+                        Category category = new Category(categoryName, url + imageUrl);
 
                         // Récupération des éléments <a> sous le div
                         Elements linkElements = categoryElement.select("div.product-link-wrapper a");
@@ -101,5 +101,15 @@ public class Catalog {
 
     public ArrayList<Category> getCatalog() {
         return catalog;
+    }
+
+    public Category getCategoryByName(String selectedCategoryName) {
+        for (Category category : catalog) {
+            if (category.getName().equals(selectedCategoryName)) {
+                return category;
+            }
+        }
+
+        return null;
     }
 }

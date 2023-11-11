@@ -3,7 +3,7 @@ package com.example.meccanocar;
 import android.os.Bundle;
 
 import com.example.meccanocar.model.Meccanocar;
-import com.example.meccanocar.ui.dashboard.DashboardViewModel;
+import com.example.meccanocar.ui.catalog.DashboardViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
