@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.meccanocar.ui.catalog.DashboardFragment"
+        android:name="com.example.meccanocar.ui.catalog.CatalogFragment"
         android:label="@string/title_catalog"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_catalog" />
 
     <fragment
         android:id="@+id/navigation_notifications"

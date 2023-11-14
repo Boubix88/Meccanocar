@@ -3,7 +3,7 @@ package com.example.meccanocar;
 import android.os.Bundle;
 
 import com.example.meccanocar.model.Meccanocar;
-import com.example.meccanocar.ui.catalog.DashboardViewModel;
+import com.example.meccanocar.ui.catalog.CatalogViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,10 +41,12 @@ public class MainActivity extends AppCompatActivity {
         Meccanocar meccanocar = new Meccanocar();
 
         // Obtenir une référence au ViewModel partagé
-        DashboardViewModel dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
+        CatalogViewModel catalogViewModel = new ViewModelProvider(this).get(CatalogViewModel.class);
 
         // Mettre à jour les données dans le ViewModel
-        dashboardViewModel.setMeccanocarData(meccanocar);
+        catalogViewModel.setMeccanocarData(meccanocar);
+
+        getSupportActionBar().hide(); // Masquer l'ActionBar
     }
 
 }

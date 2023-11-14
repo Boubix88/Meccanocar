@@ -1,9 +1,6 @@
 package com.example.meccanocar.ui.catalog;
 
-import android.annotation.SuppressLint;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,20 +13,19 @@ import com.example.meccanocar.R;
 import com.example.meccanocar.model.Category;
 import com.example.meccanocar.ui.adapter.CategoryAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class DashboardFragment extends Fragment {
+public class CatalogFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
+    private CatalogViewModel catalogViewModel;
     private RecyclerView categoryRecyclerView;
     private RecyclerView.Adapter adapter; // l'adaptateur
     private RecyclerView.LayoutManager layoutManager; // le gesdtionnaire de mise en page
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        catalogViewModel = new ViewModelProvider(this).get(CatalogViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_catalog, container, false);
 
         // Recycler view
         this.categoryRecyclerView = root.findViewById(R.id.categoryRecyclerView);
@@ -37,7 +33,7 @@ public class DashboardFragment extends Fragment {
         this.layoutManager = new LinearLayoutManager(this.getContext());
         this.categoryRecyclerView.setLayoutManager(layoutManager);
 
-        List<Category> category = dashboardViewModel.getCategories().getValue();
+        List<Category> category = catalogViewModel.getCategories().getValue();
         adapter = new CategoryAdapter(category);
         this.categoryRecyclerView.setAdapter(adapter);
 

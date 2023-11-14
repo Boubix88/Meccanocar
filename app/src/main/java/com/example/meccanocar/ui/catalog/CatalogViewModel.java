@@ -9,8 +9,9 @@ import com.example.meccanocar.model.Item;
 import com.example.meccanocar.model.Meccanocar;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class DashboardViewModel extends ViewModel {
+public class CatalogViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
     private final MutableLiveData<Meccanocar> meccanocarData;
@@ -18,7 +19,7 @@ public class DashboardViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<Item>> itemsLiveData;
     private Meccanocar meccanocar;
 
-    public DashboardViewModel() {
+    public CatalogViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is dashboard fragment");
 
@@ -49,6 +50,10 @@ public class DashboardViewModel extends ViewModel {
             ArrayList<Category> categories = meccanocar.getCatalog().getCatalog();
             categoriesLiveData.setValue(categories);
         }
+    }
+
+    public List<Item> getAllItems(){
+        return this.meccanocar.getCatalog().getAllItems();
     }
 
     public LiveData<ArrayList<Category>> getCategories() {

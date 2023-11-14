@@ -1,7 +1,9 @@
 package com.example.meccanocar.model;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.*;
 import org.jsoup.Jsoup;
@@ -9,7 +11,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class Catalog {
+public class Catalog implements Serializable {
     private ArrayList<Category> catalog;
     private String url;
     private String catalogUrl = "/fr/catalogues";
@@ -54,6 +56,7 @@ public class Catalog {
                     Elements catalogElement = doc.select(".all-products-section");
 
                     // Parcours de tous les éléments "all-products-section"
+                    int i = 0;
                     for (Element categoryElement : catalogElement) {
                         // Récupération du titre (premier élément h3)
                         Element titleCategory = categoryElement.selectFirst("h3");
@@ -74,7 +77,7 @@ public class Catalog {
 
 
                         // On crée une nouvelle catégorie
-                        Category category = new Category(categoryName, url + imageUrl);
+                        Category category = new Category(categoryName, url + imageUrl, i);
 
                         // Récupération des éléments <a> sous le div
                         Elements linkElements = categoryElement.select("div.product-link-wrapper a");
@@ -88,8 +91,11 @@ public class Catalog {
                             System.out.println("[test]Lien : " + url + itemLink);
 
                             // On crée un nouvel item avec son nom et le lien de son pdf
-                            category.addItem(new Item(itemName, url + itemLink));
+                            category.addItem(new Item(itemName, url + itemLink, i));
                         }
+
+                        // Id de la catégorie
+                        i++;
 
                         // On ajoute cette nouvelle catégorie à notre catalogue
                         catalog.add(category);
@@ -111,5 +117,13 @@ public class Catalog {
         }
 
         return null;
+    }
+
+    public List<Item> getAllItems() {
+        List<Item> allItems = new ArrayList<>();
+        for (Category category : catalog) {
+            allItems.addAll(category.getItems());
+        }
+        return allItems;
     }
 }

@@ -9,17 +9,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meccanocar.R;
 import com.example.meccanocar.model.Category;
+import com.example.meccanocar.model.Item;
 import com.example.meccanocar.ui.catalog.CategoryViewHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
+// CategoryAdapter.java
+// CategoryAdapter.java
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
-    private List<Category> category = null;
+    private List<Category> categories;
 
-    public CategoryAdapter(List<Category> contacts){
-        if (contacts != null){
-            this.category = contacts;
-        }
+    public CategoryAdapter(List<Category> categories) {
+        this.categories = categories;
     }
 
     @NonNull
@@ -32,14 +34,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-        Category c= category.get(position);
-        holder.afficher(c);
+        Category category = categories.get(position);
+        holder.afficher(category);
     }
 
     @Override
     public int getItemCount() {
-        if(category != null)
-            return category.size();
+        if (categories != null)
+            return categories.size();
         return 0;
     }
 }
