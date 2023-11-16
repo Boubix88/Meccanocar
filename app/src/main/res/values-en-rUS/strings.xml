@@ -2,4 +2,7 @@
 <resources>
     <string name="download_pdf_text">Downloading PDF</string>
     <string name="download_pdf_error">Error while downloading</string>
+    <string name="open_pdf_error">Error while opening PDF</string>
+    <string name="no_pdf_viewer_error">Error : no PDF reader installed</string>
+    <string name="search_no_result">No result</string>
 </resources>

@@ -14,10 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Meccanocar"
         tools:targetApi="31">
+
         <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name">
+            android:name=".SplashScreenActivity"
+            android:theme="@style/SplashTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,8 +27,9 @@
         </activity>
 
         <activity
-            android:name=".ui.catalog.CategoryDetailActivity"
-            android:label="Category Details">
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name">
         </activity>
     </application>
 

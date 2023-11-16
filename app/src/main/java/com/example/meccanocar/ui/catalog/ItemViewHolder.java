@@ -3,6 +3,7 @@ package com.example.meccanocar.ui.catalog;
 // ItemViewHolder.java
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.view.View;
@@ -26,6 +27,33 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
         itemName = itemView.findViewById(R.id.itemName); // Remplacez avec l'ID réel de l'élément dans votre item_card.xml
 
         downloadButton = itemView.findViewById(R.id.downloadButton);  // Ajout de cette ligne
+
+        // Ajout du listener sur chaque item
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Récupérer l'objet Item associé à cet élément de la liste
+                Item item = getItem();
+
+                // Vérifier si l'objet Item et le lien PDF ne sont pas null
+                if (item != null && item.getLink() != null) {
+                    // Ouvrir le PDF avec une application externe
+                    openPdfWithExternalApp(itemView.getContext(), item.getLink());
+                } else {
+                    Toast.makeText(itemView.getContext(), R.string.open_pdf_error, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            // Méthode pour obtenir l'objet Item associé à cet élément de la liste
+            private Item getItem() {
+                for (Item item : items) {
+                    if (item.getName().equals(itemName.getText())) {
+                        return item;
+                    }
+                }
+                return null;
+            }
+        });
 
         // Ajout de l'écouteur de clic sur le bouton de téléchargement
         downloadButton.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +83,21 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
                 return null;
             }
         });
+    }
+
+    // Méthode pour ouvrir le PDF avec une application externe
+    private void openPdfWithExternalApp(Context context, String pdfUrl) {
+        Uri uri = Uri.parse(pdfUrl);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, "application/pdf");
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        try {
+            context.startActivity(intent);
+        } catch (Exception e) {
+            // Gérer les exceptions, par exemple si aucune application pour les PDF n'est installée
+            Toast.makeText(context, R.string.no_pdf_viewer_error, Toast.LENGTH_SHORT).show();
+        }
     }
 
     // Méthode pour déclencher le téléchargement du PDF

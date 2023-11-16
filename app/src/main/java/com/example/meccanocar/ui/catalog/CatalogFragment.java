@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,13 +14,14 @@ import com.example.meccanocar.R;
 import com.example.meccanocar.model.Category;
 import com.example.meccanocar.ui.adapter.CategoryAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CatalogFragment extends Fragment {
 
     private CatalogViewModel catalogViewModel;
     private RecyclerView categoryRecyclerView;
-    private RecyclerView.Adapter adapter; // l'adaptateur
+    private CategoryAdapter adapter; // l'adaptateur
     private RecyclerView.LayoutManager layoutManager; // le gesdtionnaire de mise en page
 
     @Override
@@ -34,7 +36,7 @@ public class CatalogFragment extends Fragment {
         this.categoryRecyclerView.setLayoutManager(layoutManager);
 
         List<Category> category = catalogViewModel.getCategories().getValue();
-        adapter = new CategoryAdapter(category);
+        adapter = new CategoryAdapter(category, root);
         this.categoryRecyclerView.setAdapter(adapter);
 
         return root;
