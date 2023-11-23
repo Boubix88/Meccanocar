@@ -1,4 +1,4 @@
-package com.example.meccanocar.ui.catalog;
+package com.example.meccanocar.ui.holder;
 
 import android.view.View;
 import android.view.animation.Animation;

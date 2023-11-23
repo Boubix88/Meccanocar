@@ -9,8 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meccanocar.R;
 import com.example.meccanocar.model.Item;
-import com.example.meccanocar.ui.catalog.ItemViewHolder;
+import com.example.meccanocar.ui.holder.ItemViewHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // ItemAdapter.java
@@ -18,7 +19,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> {
     private List<Item> items;
 
     public ItemAdapter(List<Item> items) {
-        this.items = items;
+        this.items = new ArrayList<>(items);
     }
 
     @NonNull

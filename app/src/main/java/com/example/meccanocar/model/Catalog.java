@@ -1,7 +1,18 @@
 package com.example.meccanocar.model;
 
+import com.example.meccanocar.MainActivity;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.Writer;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +30,7 @@ public class Catalog implements Serializable {
     public Catalog(String u){
         this.catalog = new ArrayList<>();
         this.url = u;
-        getCatalogFromHttp();
+        getCatalogFromHttp(); // On récupère le catalogue depuis le site
     }
 
     public void getCatalogFromHttp(){
@@ -52,11 +63,46 @@ public class Catalog implements Serializable {
                     String title = doc.title();
                     System.out.println("[test]Titre de la page : " + title);
 
+
+                    /* Récupération des catégories sans items */
+
+                    Elements catalogElementWithoutItems = doc.select(".launch-tile");
+
+                    // Parcours de tous les éléments "launch-tile"
+                    int i = 0;
+                    for (Element categoryElementWithoutItems : catalogElementWithoutItems) {
+                        // Récupération du titre (premier élément h3)
+                        Element titleCategoryWithoutItems = categoryElementWithoutItems.selectFirst(".launch-tile-label");
+                        String categoryNameWithoutItems = titleCategoryWithoutItems.text();
+                        System.out.println("[test]Titre categorie : " + categoryNameWithoutItems);
+
+                        // Récupération de l'élément <div> contenant l'image
+                        Element imageDiv = categoryElementWithoutItems.selectFirst(".launch-tile-image-hover");
+
+                        // Récupération du style de l'élément <div>
+                        String srcAttribute = imageDiv.attr("src");
+                        System.out.println("[test]Image URL : " + url + srcAttribute);
+
+                        // On crée une nouvelle catégorie sans items
+                        Category category = new Category(categoryNameWithoutItems, url + srcAttribute, i);
+
+                        // On crée un nouvel item avec son nom et le lien de son pdf
+                        Element linkElement = categoryElementWithoutItems.selectFirst(".launch-tile-label-link");
+                        String itemLink = linkElement.attr("href");
+                        category.addItem(new Item(categoryNameWithoutItems, url + itemLink, i));
+
+                        catalog.add(category);
+                        i++;
+                    }
+
+
+
+                    /* Récupération des catégories avec items */
+
                     // Récupération de tous les éléments avec la classe "all-products-section"
                     Elements catalogElement = doc.select(".all-products-section");
 
                     // Parcours de tous les éléments "all-products-section"
-                    int i = 0;
                     for (Element categoryElement : catalogElement) {
                         // Récupération du titre (premier élément h3)
                         Element titleCategory = categoryElement.selectFirst("h3");

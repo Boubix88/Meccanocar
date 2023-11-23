@@ -1,4 +1,4 @@
-package com.example.meccanocar.ui.catalog;
+package com.example.meccanocar.ui.holder;
 
 // ItemViewHolder.java
 import android.app.DownloadManager;
@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meccanocar.R;
 import com.example.meccanocar.model.Item;
+import com.example.meccanocar.model.Meccanocar;
+import com.example.meccanocar.model.MeccanocarManager;
 
 import java.util.List;
 
@@ -39,6 +41,9 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
                 if (item != null && item.getLink() != null) {
                     // Ouvrir le PDF avec une application externe
                     openPdfWithExternalApp(itemView.getContext(), item.getLink());
+
+                    // On met a jour la liste des 5 derniers items vus
+                    MeccanocarManager.getInstance().updateLast5ItemsViewed(item);
                 } else {
                     Toast.makeText(itemView.getContext(), R.string.open_pdf_error, Toast.LENGTH_SHORT).show();
                 }
@@ -66,6 +71,10 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
                 if (item != null && item.getLink() != null) {
                     // Déclencher le téléchargement du PDF
                     downloadPdf(item.getLink(), item.getName());
+
+                    // On met a jour la liste des 5 derniers items vus
+                    MeccanocarManager.getInstance().updateLast5ItemsViewed(item);
+
                     Toast.makeText(itemView.getContext(), R.string.download_pdf_text, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(itemView.getContext(), R.string.download_pdf_error, Toast.LENGTH_SHORT).show();

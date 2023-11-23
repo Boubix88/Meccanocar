@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meccanocar.R;
 import com.example.meccanocar.model.Category;
-import com.example.meccanocar.ui.catalog.CategoryViewHolder;
+import com.example.meccanocar.ui.holder.CategoryViewHolder;
 import com.example.meccanocar.utils.SimilarityUtils;
 
 import java.util.ArrayList;

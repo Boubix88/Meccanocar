@@ -5,4 +5,6 @@
     <string name="open_pdf_error">Error while opening PDF</string>
     <string name="no_pdf_viewer_error">Error : no PDF reader installed</string>
     <string name="search_no_result">No result</string>
+    <string name="last_items_text">The last 5 catalog viewed</string>
+    <string name="no_last_item">Aucun catalogue consulté</string>
 </resources>

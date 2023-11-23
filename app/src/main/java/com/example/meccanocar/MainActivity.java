@@ -1,9 +1,19 @@
 package com.example.meccanocar;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
+import android.view.View;
 
 import com.example.meccanocar.model.Meccanocar;
+import com.example.meccanocar.model.MeccanocarManager;
 import com.example.meccanocar.ui.catalog.CatalogViewModel;
+import com.example.meccanocar.ui.home.HomeViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +33,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Vérification de la version d'Android
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // Vérification si l'application a déjà l'autorisation
+            if (!Environment.isExternalStorageManager()) {
+                // Si l'application n'a pas l'autorisation, demandez à l'utilisateur
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+            }
+        }
+
+        // On instancie le model
+        Meccanocar meccanocar = new Meccanocar(this);
+        MeccanocarManager.setInstance(meccanocar);
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -36,9 +62,11 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
+        // Obtenir une référence au ViewModel partagé
+        HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
-        // On instancie le model
-        Meccanocar meccanocar = new Meccanocar();
+        // Mettre à jour les données dans le ViewModel
+        homeViewModel.setMeccanocarData(meccanocar);
 
         // Obtenir une référence au ViewModel partagé
         CatalogViewModel catalogViewModel = new ViewModelProvider(this).get(CatalogViewModel.class);
@@ -48,5 +76,4 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().hide(); // Masquer l'ActionBar
     }
-
 }

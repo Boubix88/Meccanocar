@@ -4,16 +4,37 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+import com.example.meccanocar.model.Item;
+import com.example.meccanocar.model.Meccanocar;
+import com.example.meccanocar.model.MeccanocarManager;
 
-    private final MutableLiveData<String> mText;
+import java.util.ArrayList;
+
+public class HomeViewModel extends ViewModel {
+    private final MutableLiveData<Meccanocar> meccanocarData;
+    private Meccanocar meccanocar;
 
     public HomeViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+        meccanocarData = new MutableLiveData<>();
+        meccanocar = MeccanocarManager.getInstance();
+
+        loadMeccanocar(); // Chargez vos données Meccanocar ici
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public ArrayList<Item> getLast5ItemsViewed(){
+        return this.meccanocar.getLast5ItemsViewed();
+    }
+
+    private void loadMeccanocar() {
+        // Supposons que vous avez une logique pour charger vos données Meccanocar
+        meccanocarData.setValue(meccanocar);
+    }
+
+    public void setMeccanocarData(Meccanocar m) {
+        meccanocar = m;
+    }
+
+    public Meccanocar getMecanocar() {
+        return meccanocar;
     }
 }

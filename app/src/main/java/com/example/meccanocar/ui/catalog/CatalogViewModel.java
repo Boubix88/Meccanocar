@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.meccanocar.model.Category;
 import com.example.meccanocar.model.Item;
 import com.example.meccanocar.model.Meccanocar;
+import com.example.meccanocar.model.MeccanocarManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class CatalogViewModel extends ViewModel {
         categoriesLiveData = new MutableLiveData<>();
         itemsLiveData = new MutableLiveData<>();
 
-        meccanocar = new Meccanocar();
+        meccanocar = MeccanocarManager.getInstance();
 
         loadMeccanocar(); // Chargez vos données Meccanocar ici
     }
