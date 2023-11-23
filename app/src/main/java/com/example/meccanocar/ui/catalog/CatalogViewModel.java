@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.meccanocar.model.Category;
 import com.example.meccanocar.model.Item;
 import com.example.meccanocar.model.Meccanocar;
-import com.example.meccanocar.model.MeccanocarManager;
+import com.example.meccanocar.model.manager.MeccanocarManager;
 
 import java.util.ArrayList;
 import java.util.List;

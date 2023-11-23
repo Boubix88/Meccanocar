@@ -1,14 +1,9 @@
 package com.example.meccanocar.model;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import android.provider.Settings;
 
+import com.example.meccanocar.model.listener.DescriptionCallback;
+import com.example.meccanocar.model.listener.NewsLoadListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -45,8 +40,6 @@ public class Meccanocar {
         this.catalog = new Catalog(URL);
         this.news = new ArrayList<>();
         this.last5ItemsViewed = new ArrayList<>();
-        loadLast5ItemsViewedFromJson(); // On récupère les 5 derniers items vus depuis le fichier JSON
-        getNewsFromHttp(); // On récupère les news depuis le site
     }
 
     public Catalog getCatalog() {
@@ -120,7 +113,7 @@ public class Meccanocar {
         saveLast5ItemsViewedToJson();
     }
 
-    public void getNewsFromHttp() {
+    public void getNewsFromHttp(final NewsLoadListener listener) {
         // Créez un client HTTP
         OkHttpClient client = new OkHttpClient();
 
@@ -169,75 +162,26 @@ public class Meccanocar {
                         String descriptionUrl = descriptionLink.attr("href");
 
                         // On recupère la description détaillée
-                        /*String[] description = getNewsDescriptionHttp(descriptionUrl);
-                        System.out.println("[News]Description : " + description);
-                        news.add(new News(title, date, URL + imageUrl, recap, description));*/
-
                         getNewsDescriptionHttp(descriptionUrl, new DescriptionCallback() {
                             @Override
                             public void onDescriptionLoaded(String[] descriptions) {
                                 // Utilisez les descriptions récupérées ici
                                 String[] description = new String[descriptions.length];
-                                /*int i = 0;
-                                for (String desc : descriptions) {
-                                    System.out.println("[News] Paragraphe : " + desc);
-                                    System.out.println("[News] Lien : " + descriptionUrl);
-                                    description[i] = desc;
-                                    i++;
-                                }*/
                                 System.out.println("[News] Lien : " + descriptionUrl);
                                 description = descriptions;
                                 news.add(new News(title, date, URL + imageUrl, recap, description));
                             }
                         });
                     }
+
+                    System.out.println("[HomeFragment] chargement new terminé ");
+                    // Après avoir collecté toutes les nouvelles
+                    // Informez le listener que le chargement est terminé
+                    listener.onNewsLoaded();
                 }
             }
         });
     }
-
-    /*public String[] getNewsDescriptionHttp(String u) {
-        final String[][] description = {null};
-
-        // Créez un client HTTP
-        OkHttpClient client = new OkHttpClient();
-
-        // Créez une requête pour récupérer le contenu HTML du site
-        Request request = new Request.Builder()
-                .url(u)
-                .build();
-
-        // Exécutez la requête de manière asynchrone
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    Document doc = Jsoup.parse(response.body().string());
-
-                    // Récupération des paragraphes
-                    Element paragraphs = doc.selectFirst(".news-article-content");
-                    Elements p = paragraphs.select("p");
-
-                    description[0] = new String[p.size()];
-                    int i = 0;
-
-                    // On parcourt les paragraphes
-                    for (Element p1 : p) {
-                        description[0][i] = p1.text();
-                        i++;
-                        System.out.println("[News]Paragraphe : " + p1.text());
-                    }
-                }
-            }
-        });
-
-        return description[0];
-    }*/
 
     public void getNewsDescriptionHttp(String u, DescriptionCallback callback) {
         OkHttpClient client = new OkHttpClient();
@@ -253,30 +197,6 @@ public class Meccanocar {
             }
 
             @Override
-            /*public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    Document doc = Jsoup.parse(response.body().string());
-
-                    Element paragraphs = doc.selectFirst(".news-article-content");
-                    Elements p = paragraphs.select("p");
-
-                    String[] descriptions = new String[p.size()];
-                    int i = 0;
-
-                    for (Element p1 : p) {
-                        descriptions[i] = p1.text();
-
-                        // Si le paragraphe contient <br> on ajoute un saut de ligne
-                        if (p1.selectFirst("br") != null) {
-                            descriptions[i] += "\n";
-                            System.out.println("[News]Saut de ligne : " + descriptions[i]);
-                        }
-                        i++;
-                    }
-
-                    callback.onDescriptionLoaded(descriptions);
-                }
-            }*/
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     Document doc = Jsoup.parse(response.body().string());
@@ -292,21 +212,6 @@ public class Meccanocar {
                     }
 
                     System.out.println("[News]Description : " + descriptions[0]);
-
-                    /*for (int i = 0; i < p.size(); i++) {
-                        Element paragraph = p.get(i);
-                        String paragraphText = paragraph.text();
-
-                        // Si le paragraphe contient des sauts de ligne
-                        if (paragraph.selectFirst("br") != null) {
-                            paragraphText += "\n";
-                        } else {
-                            // Ajoute un saut de ligne entre les paragraphes s'il n'y a pas de balise <br>
-                            paragraphText += "\n\n";
-                        }
-
-                        descriptions[i] = paragraphText;
-                    }*/
 
                     callback.onDescriptionLoaded(descriptions);
                 }

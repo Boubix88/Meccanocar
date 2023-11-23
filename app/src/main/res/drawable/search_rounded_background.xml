@@ -1,0 +1,9 @@
+<!-- custom_rounded_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:radius="50dp" /> <!-- Ajustez la valeur du rayon selon vos besoins -->
+    <solid android:color="#00C8C8C8" /> <!-- Couleur de fond -->
+    <stroke
+        android:width="2dp"
+        android:color="#B5B5B5"
+        android:padding="2dp" /> <!-- Ajustez la largeur de la bordure -->
+</shape>

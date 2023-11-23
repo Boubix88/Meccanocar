@@ -3,8 +3,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
-    android:background="#EAEAEA"
-    app:cardCornerRadius="2dp"
+    android:background="@drawable/rounded_background"
     >
 
     <ImageView

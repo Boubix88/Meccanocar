@@ -41,8 +41,8 @@ public class NewsDetailsActivity extends AppCompatActivity {
 
             // Afficher les détails récupérés dans les vues
             if (news != null) {
-                // Utiliser les données de l'objet News pour remplir les vues
-                Picasso.get().load(news.getImageUrl()).into(imageView); // Remplacez avec la méthode appropriée pour définir l'image
+                // On affiche l'image de la news, la date, le titre, le résumé et la description et la description détaillée
+                news.loadImage(imageView);
                 dateTextView.setText(news.getDate());
                 titleTextView.setText(news.getTitle());
                 recapTextView.setText(news.getRecap());
@@ -57,16 +57,5 @@ public class NewsDetailsActivity extends AppCompatActivity {
         // Gestion du texte clicable pour retourner en arrière
         TextView textViewBack = findViewById(R.id.textViewBack);
         textViewBack.setOnClickListener(view -> finish());
-    }
-
-    // Simule la récupération des détails de la news
-    private News getNewsDetails(int newsId) {
-        // Ici, vous devriez récupérer les détails de la news depuis votre source de données
-        // Remplacez cette méthode avec votre logique de récupération de données
-        // Utilisez l'ID pour obtenir les détails spécifiques de la news
-        // Retournez un objet News ou null si non trouvé
-        // Par exemple :
-        // return MeccanocarManager.getInstance().getNewsDetails(newsId);
-        return null; // Pour l'exemple, retourne null
     }
 }

@@ -1,12 +1,12 @@
 package com.example.meccanocar.ui.home;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.meccanocar.model.Item;
 import com.example.meccanocar.model.Meccanocar;
-import com.example.meccanocar.model.MeccanocarManager;
+import com.example.meccanocar.model.manager.MeccanocarManager;
+import com.example.meccanocar.model.News;
 
 import java.util.ArrayList;
 
@@ -23,6 +23,10 @@ public class HomeViewModel extends ViewModel {
 
     public ArrayList<Item> getLast5ItemsViewed(){
         return this.meccanocar.getLast5ItemsViewed();
+    }
+
+    public ArrayList<News> getNews(){
+        return this.meccanocar.getNews();
     }
 
     private void loadMeccanocar() {

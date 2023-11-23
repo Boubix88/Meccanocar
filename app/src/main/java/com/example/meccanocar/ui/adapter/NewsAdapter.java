@@ -39,7 +39,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         News news = newsList.get(position);
 
         // Set image (assuming you have a method getImage() in your News class)
-        Picasso.get().load(news.getImageUrl()).into(holder.imageViewNews);
+        news.loadImage(holder.imageViewNews);
 
         // Set date
         holder.dateNews.setText(news.getDate());
@@ -76,10 +76,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
                     // Ouvrir la page de détails lorsque l'élément est cliqué
                     int position = getAdapterPosition();
                     Context context = itemView.getContext();
-                    Intent intent = new Intent(context,
-                            NewsDetailsActivity.class);
-                    intent.putExtra("news", newsList.get(position));
-                    // Ajouter des données supplémentaires à l'intent si nécessaire (par exemple, l'ID de la news)
+                    Intent intent = new Intent(context, NewsDetailsActivity.class);
+                    intent.putExtra("news", newsList.get(position)); // On passe l'objet news à l'activité
+
                     context.startActivity(intent);
                 }
             });

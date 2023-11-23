@@ -1,30 +1,26 @@
 package com.example.meccanocar;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class SplashScreenActivity extends AppCompatActivity {
+import com.example.meccanocar.model.manager.TaskManager;
 
-    private static final long SPLASH_TIME_OUT = 2000; // Temps d'affichage du splash screen en millisecondes
+public class SplashScreenActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Lancez l'activité principale après le délai
-                Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
-                startActivity(intent);
+        // Masquer la barre de statut
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-                // Terminez cette activité
-                finish();
-            }
-        }, SPLASH_TIME_OUT);
+
+        // On démarre les tâches et une fois terminées, on lance l'activité principale
+        TaskManager taskManager = new TaskManager(this);
+        taskManager.startTasks();
     }
 }

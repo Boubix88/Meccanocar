@@ -16,8 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meccanocar.R;
 import com.example.meccanocar.model.Item;
-import com.example.meccanocar.model.Meccanocar;
-import com.example.meccanocar.model.MeccanocarManager;
+import com.example.meccanocar.model.manager.MeccanocarManager;
 
 import java.util.List;
 

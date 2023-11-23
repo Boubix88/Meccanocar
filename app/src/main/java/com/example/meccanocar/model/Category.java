@@ -2,6 +2,7 @@ package com.example.meccanocar.model;
 
 import android.widget.ImageView;
 
+import com.example.meccanocar.MainActivity;
 import com.squareup.picasso.Picasso;
 
 import org.jsoup.nodes.Element;
@@ -34,7 +35,6 @@ public class Category implements Serializable {
         return category;
     }
 
-    // Ajoutez cette méthode pour afficher correctement le titre dans le Spinner
     @Override
     public String toString() {
         return name;
@@ -54,5 +54,9 @@ public class Category implements Serializable {
 
     public int getId() {
         return id;
+    }
+
+    public void loadImage(ImageView image) {
+        Picasso.get().load(this.urlImage).into(image);
     }
 }

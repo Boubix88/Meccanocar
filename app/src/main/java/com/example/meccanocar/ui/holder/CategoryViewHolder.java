@@ -1,18 +1,24 @@
 package com.example.meccanocar.ui.holder;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meccanocar.R;
 import com.example.meccanocar.model.Category;
+import com.example.meccanocar.model.manager.MeccanocarManager;
 import com.example.meccanocar.ui.adapter.CategoryAdapter;
 import com.example.meccanocar.ui.adapter.ItemAdapter;
 import com.squareup.picasso.Picasso;
@@ -87,13 +93,49 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void expandRecyclerView(final View view) {
+        // On affiche les items de la catégorie avec une animation
         view.setVisibility(View.VISIBLE);
         Animation slideDown = AnimationUtils.loadAnimation(itemView.getContext(), R.anim.slide_down);
         view.startAnimation(slideDown);
+
+
+        // RecyclerView globale contenue dans le fragment
+        RecyclerView recyclerView = (RecyclerView) itemView.getParent();
+
+        // Récupérer la position de la catégorie cliquée
+        int positionOfClickedCategory = getAdapterPosition();
+
+        // On récupère les informations de la catégorie cliquée
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+
+        // On vérifie que la position de la catégorie cliquée n'est pas la dernière
+        if (positionOfClickedCategory < layoutManager.getItemCount()) {
+            // On récupère la hauteur de la RecyclerView presente dans la catégorie cliquée
+            recyclerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+            int recyclerViewHeight = view.getHeight();
+
+            // On adapte la transition slide_down en fonction de la hauteur de la RecyclerView
+            Animation slideDownCat = new TranslateAnimation(
+                    Animation.RELATIVE_TO_SELF, 0f,
+                    Animation.RELATIVE_TO_SELF, 0f,
+                    Animation.ABSOLUTE, -recyclerViewHeight,
+                    Animation.ABSOLUTE, 0f
+            );
+            slideDownCat.setDuration(itemView.getContext().getResources().getInteger(android.R.integer.config_mediumAnimTime));
+
+            // On applique l'animation sur toutes les catégories suivantes
+            for (int i = positionOfClickedCategory; i < layoutManager.getItemCount() - 1; i++) {
+                // Récupérer la vue de la catégorie suivante
+                View viewTmp = layoutManager.findViewByPosition(i + 1);
+
+                viewTmp.startAnimation(slideDownCat);
+            }
+        }
     }
 
     private void collapseRecyclerView(final View view) {
         Animation slideUp = AnimationUtils.loadAnimation(itemView.getContext(), R.anim.slide_up);
+
         slideUp.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -109,6 +151,46 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder {
             }
         });
         view.startAnimation(slideUp);
+
+
+        // RecyclerView globale contenue dans le fragment
+        RecyclerView recyclerView = (RecyclerView) itemView.getParent();
+
+        // Récupérer la position de la catégorie cliquée
+        int positionOfClickedCategory = getAdapterPosition();
+
+        // On récupère les informations de la catégorie cliquée
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+
+        // On vérifie que la position de la catégorie cliquée n'est pas la dernière
+        if (positionOfClickedCategory < layoutManager.getItemCount()) {
+            // On récupère la hauteur de la RecyclerView presente dans la catégorie cliquée
+            recyclerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+            int recyclerViewHeight = view.getHeight();
+
+            // On adapte la transition slide_down en fonction de la hauteur de la RecyclerView
+            Animation slideUpCat = new TranslateAnimation(
+                    Animation.RELATIVE_TO_SELF, 0f,
+                    Animation.RELATIVE_TO_SELF, 0f,
+                    Animation.ABSOLUTE, 0f,
+                    Animation.ABSOLUTE, -recyclerViewHeight
+            );
+            slideUpCat.setDuration(itemView.getContext().getResources().getInteger(android.R.integer.config_mediumAnimTime));
+
+            // On applique l'animation sur toutes les catégories suivantes
+            for (int i = positionOfClickedCategory; i < layoutManager.getItemCount() - 1; i++) {
+                System.out.println("[Category] Anim i : " + i);
+                // Récupérer la vue de la catégorie suivante
+                View viewTmp = layoutManager.findViewByPosition(i + 1);
+
+                // On vérifie que la vue n'est pas null
+                if (viewTmp != null) {
+                    viewTmp.startAnimation(slideUpCat);
+                } else {
+                    System.out.println("[Category] ViewTmp null");
+                }
+            }
+        }
     }
 
     private void updateList(String query) {
@@ -116,8 +198,9 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void afficher(Category category) {
+        // On affiche le nom et l'image de la catégorie
         name.setText(category.getName());
-        Picasso.get().load(category.getUrlImage()).into(image);
+        category.loadImage(image);
 
         // Mettez en place l'adaptateur pour le RecyclerView des articles
         ItemAdapter itemAdapter = new ItemAdapter(category.getItems());

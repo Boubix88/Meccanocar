@@ -1,4 +1,6 @@
-package com.example.meccanocar.model;
+package com.example.meccanocar.model.manager;
+
+import com.example.meccanocar.model.Meccanocar;
 
 public class MeccanocarManager {
     private static Meccanocar instance;

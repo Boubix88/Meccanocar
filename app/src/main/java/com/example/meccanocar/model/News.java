@@ -1,5 +1,9 @@
 package com.example.meccanocar.model;
 
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -31,18 +35,6 @@ public class News implements Serializable {
         this.description = description;
     }
 
-    public News(String url) {
-        this.title = "";
-        this.description = null;
-        this.date = "";
-        this.imageUrl = "";
-        this.recap = "";
-        this.url = url;
-
-        // On récupère les news depuis le site
-        //getNewsFromHttp();
-    }
-
     public String getTitle() {
         return title;
     }
@@ -50,14 +42,6 @@ public class News implements Serializable {
     public String[] getDescription() {
         return description;
     }
-
-    /*public String getFullDescription() {
-        String fullDescription = "";
-        for (String s : description) {
-            fullDescription += s + "\n";
-        }
-        return fullDescription;
-    }*/
 
     public String getFullDescription() {
         String htmlDescription = "";
@@ -82,6 +66,10 @@ public class News implements Serializable {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public void loadImage(ImageView image) {
+        Picasso.get().load(this.imageUrl).into(image);
     }
 
     public String getRecap() {

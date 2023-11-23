@@ -9,7 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green_100">#18903c</color>
     <color name="green_200">#00c883</color>
-    <color name="color_on_background_card">#EAEAEA</color>
-    <color name="text_primary">#353535</color>
-    <color name="status_bar">#FFFFFFFF</color>
+    <color name="color_on_background_card">#18903c</color>
+    <color name="text_primary">#EAEAEA</color>
+    <color name="status_bar">#FF000000</color>
 </resources>
