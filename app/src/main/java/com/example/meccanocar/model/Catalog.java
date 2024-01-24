@@ -1,5 +1,7 @@
 package com.example.meccanocar.model;
 
+import android.content.Context;
+
 import com.example.meccanocar.model.listener.CatalogLoadListener;
 
 import java.io.IOException;
@@ -8,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.*;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -17,10 +20,12 @@ public class Catalog implements Serializable {
     private ArrayList<Category> catalog;
     private String url;
     private String catalogUrl = "/fr/catalogues";
+    private Context context;
 
-    public Catalog(String u){
+    public Catalog(String u, Context context){
         this.catalog = new ArrayList<>();
         this.url = u;
+        this.context = context;
     }
 
     public void getCatalogFromHttp(final CatalogLoadListener listener){
@@ -79,12 +84,11 @@ public class Catalog implements Serializable {
                         // On crée un nouvel item avec son nom et le lien de son pdf
                         Element linkElement = categoryElementWithoutItems.selectFirst(".launch-tile-label-link");
                         String itemLink = linkElement.attr("href");
-                        category.addItem(new Item(categoryNameWithoutItems, url + itemLink, i));
+                        category.addSubCategory(new SubCategory(categoryNameWithoutItems, url + itemLink, i, context));
 
                         catalog.add(category);
                         i++;
                     }
-
 
 
                     /* Récupération des catégories avec items */
@@ -126,8 +130,11 @@ public class Catalog implements Serializable {
                             System.out.println("[test]Titre : " + itemName);
                             System.out.println("[test]Lien : " + url + itemLink);
 
-                            // On crée un nouvel item avec son nom et le lien de son pdf
-                            category.addItem(new Item(itemName, url + itemLink, i));
+                            // On crée une nouvelle sous catégorie son nom et le lien de son pdf
+                            SubCategory subCategory = new SubCategory(itemName, url + itemLink, i, context);
+
+                            // On ajoute la sous catégorie à la catégorie
+                            category.addSubCategory(subCategory);
                         }
 
                         // Id de la catégorie
@@ -157,11 +164,11 @@ public class Catalog implements Serializable {
         return null;
     }
 
-    public List<Item> getAllItems() {
-        List<Item> allItems = new ArrayList<>();
+    public List<SubCategory> getAllSubCatgegorys() {
+        List<SubCategory> allSubCategories = new ArrayList<>();
         for (Category category : catalog) {
-            allItems.addAll(category.getItems());
+            allSubCategories.addAll(category.getSubCategorys());
         }
-        return allItems;
+        return allSubCategories;
     }
 }

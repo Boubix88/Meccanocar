@@ -22,10 +22,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
     private List<Category> categories;
     private final List<Category> allCategories;
     private final TextView searchResult;
+    private final View root;
 
     public CategoryAdapter(List<Category> categories, View parent) {
         this.categories = categories;
         this.allCategories = new ArrayList<>(categories); // Créez une copie de toutes les catégories
+        this.root = parent;
 
         // Récupérer la référence de la SearchView dans le fragment
         SearchView searchView = parent.findViewById(R.id.searchView);
@@ -55,7 +57,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.category_card, parent, false);
 
-        return new CategoryViewHolder(view, this);
+        return new CategoryViewHolder(view, root, this);
     }
 
     @Override

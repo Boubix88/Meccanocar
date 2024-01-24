@@ -32,12 +32,12 @@ public class Meccanocar {
     private String newsUrl = "/fr/news";
     private Catalog catalog;
     private ArrayList<News> news;
-    private ArrayList<Item> last5ItemsViewed;
+    private ArrayList<SubCategory> last5ItemsViewed;
     private Context context;
 
     public Meccanocar(Context context) {
         this.context = context;
-        this.catalog = new Catalog(URL);
+        this.catalog = new Catalog(URL, context);
         this.news = new ArrayList<>();
         this.last5ItemsViewed = new ArrayList<>();
     }
@@ -50,7 +50,7 @@ public class Meccanocar {
         return this.news;
     }
 
-    public ArrayList<Item> getLast5ItemsViewed() {
+    public ArrayList<SubCategory> getLast5ItemsViewed() {
         return last5ItemsViewed;
     }
 
@@ -78,7 +78,7 @@ public class Meccanocar {
 
     public void loadLast5ItemsViewedFromJson() {
         Gson gson = new Gson();
-        Type listType = new TypeToken<ArrayList<Item>>() {
+        Type listType = new TypeToken<ArrayList<SubCategory>>() {
         }.getType();
 
         // Lecture du JSON depuis le fichier
@@ -98,19 +98,19 @@ public class Meccanocar {
         }
     }
 
-    public void updateLast5ItemsViewed(Item item) {
-        // Ajouter l'item à la liste
-        if (!last5ItemsViewed.contains(item)) {
-            last5ItemsViewed.add(item);
+    public void updateLast5ItemsViewed(SubCategory subCategory) {
+        // Ajouter l'subCategory à la liste
+        if (!last5ItemsViewed.contains(subCategory)) {
+            last5ItemsViewed.add(subCategory);
         }
 
-        // Supprimer le premier item de la liste si elle contient plus de 5 items
+        // Supprimer le premier subCategory de la liste si elle contient plus de 5 items
         if (last5ItemsViewed.size() > 5) {
             last5ItemsViewed.remove(0);
         }
 
         // Sauvegarder la liste dans le fichier JSON
-        saveLast5ItemsViewedToJson();
+        //saveLast5ItemsViewedToJson();
     }
 
     public void getNewsFromHttp(final NewsLoadListener listener) {
@@ -140,22 +140,22 @@ public class Meccanocar {
                         // Récupération de l'image
                         Element image = article.selectFirst(".news-articles-item-small-image");
                         String imageUrl = image.attr("src");
-                        System.out.println("[News]Image URL: " + URL + imageUrl);
+                        //System.out.println("[News]Image URL: " + URL + imageUrl);
 
                         // Récupération de la date
                         Element dateElement = article.selectFirst(".date-and-category-date");
                         String date = dateElement.text();
-                        System.out.println("[News]Date: " + date);
+                        //System.out.println("[News]Date: " + date);
 
                         // Récupération du titre
                         Element titleElement = article.selectFirst(".news-articles-item-title");
                         String title = titleElement.text();
-                        System.out.println("[News]Title: " + title);
+                        //System.out.println("[News]Title: " + title);
 
                         // Récupération du résumé
                         Element recapElement = article.selectFirst(".news-articles-item-content");
                         String recap = recapElement.text();
-                        System.out.println("[News]Recap: " + recap);
+                        //System.out.println("[News]Recap: " + recap);
 
                         // Récupération du lien pour la description détaillée
                         Element descriptionLink = article.selectFirst(".news-articles-item-body a");
@@ -167,14 +167,14 @@ public class Meccanocar {
                             public void onDescriptionLoaded(String[] descriptions) {
                                 // Utilisez les descriptions récupérées ici
                                 String[] description = new String[descriptions.length];
-                                System.out.println("[News] Lien : " + descriptionUrl);
+                                //System.out.println("[News] Lien : " + descriptionUrl);
                                 description = descriptions;
                                 news.add(new News(title, date, URL + imageUrl, recap, description));
                             }
                         });
                     }
 
-                    System.out.println("[HomeFragment] chargement new terminé ");
+                    //System.out.println("[HomeFragment] chargement new terminé ");
                     // Après avoir collecté toutes les nouvelles
                     // Informez le listener que le chargement est terminé
                     listener.onNewsLoaded();
@@ -211,7 +211,7 @@ public class Meccanocar {
                         }
                     }
 
-                    System.out.println("[News]Description : " + descriptions[0]);
+                    //System.out.println("[News]Description : " + descriptions[0]);
 
                     callback.onDescriptionLoaded(descriptions);
                 }

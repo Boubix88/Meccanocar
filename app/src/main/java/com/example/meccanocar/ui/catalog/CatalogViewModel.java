@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.meccanocar.model.Category;
-import com.example.meccanocar.model.Item;
+import com.example.meccanocar.model.SubCategory;
 import com.example.meccanocar.model.Meccanocar;
 import com.example.meccanocar.model.manager.MeccanocarManager;
 
@@ -17,7 +17,7 @@ public class CatalogViewModel extends ViewModel {
     private final MutableLiveData<String> mText;
     private final MutableLiveData<Meccanocar> meccanocarData;
     private final MutableLiveData<ArrayList<Category>> categoriesLiveData;
-    private final MutableLiveData<ArrayList<Item>> itemsLiveData;
+    private final MutableLiveData<ArrayList<SubCategory>> itemsLiveData;
     private Meccanocar meccanocar;
 
     public CatalogViewModel() {
@@ -53,15 +53,15 @@ public class CatalogViewModel extends ViewModel {
         }
     }
 
-    public List<Item> getAllItems(){
-        return this.meccanocar.getCatalog().getAllItems();
+    public List<SubCategory> getAllSubCatgegorys(){
+        return this.meccanocar.getCatalog().getAllSubCatgegorys();
     }
 
     public LiveData<ArrayList<Category>> getCategories() {
         return categoriesLiveData;
     }
 
-    public LiveData<ArrayList<Item>> getItems() {
+    public LiveData<ArrayList<SubCategory>> getItems() {
         return itemsLiveData;
     }
 
@@ -70,7 +70,7 @@ public class CatalogViewModel extends ViewModel {
         if (meccanocar != null) {
             // Utilisez une logique pour obtenir la catégorie correspondante en fonction de son nom
             Category selectedCategory = meccanocar.getCatalog().getCategoryByName(selectedCategoryName);
-            itemsLiveData.setValue(selectedCategory != null ? selectedCategory.getItems() : new ArrayList<>());
+            itemsLiveData.setValue(selectedCategory != null ? selectedCategory.getSubCategorys() : new ArrayList<>());
         }
     }
 

@@ -1,42 +1,38 @@
 package com.example.meccanocar.ui.holder;
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.meccanocar.R;
 import com.example.meccanocar.model.Category;
-import com.example.meccanocar.model.manager.MeccanocarManager;
 import com.example.meccanocar.ui.adapter.CategoryAdapter;
-import com.example.meccanocar.ui.adapter.ItemAdapter;
-import com.squareup.picasso.Picasso;
+import com.example.meccanocar.ui.adapter.SubCategoryAdapter;
 
 public class CategoryViewHolder extends RecyclerView.ViewHolder {
     private final TextView name;
     private final ImageView image;
     private final ImageView imageArrow;
-    private final RecyclerView itemRecyclerView;
+    private final RecyclerView subCategoryRecyclerView;
     //private final SearchView searchView;
     private final CategoryAdapter categoryAdapter;
+    private View root;
 
-    public CategoryViewHolder(final View itemView, CategoryAdapter adapter) {
+    public CategoryViewHolder(final View itemView, View root, CategoryAdapter adapter) {
         super(itemView);
+
+        this.root = root;
 
         name = itemView.findViewById(R.id.nameCategory);
         image = itemView.findViewById(R.id.imageCategory);
-        itemRecyclerView = itemView.findViewById(R.id.itemRecyclerView);
+        subCategoryRecyclerView = itemView.findViewById(R.id.subCategoryRecyclerView);
         imageArrow = itemView.findViewById(R.id.imageBottomArrow);
         categoryAdapter = adapter;
 
@@ -45,18 +41,18 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder {
         searchView = itemView.getRootView().getRootView().findViewById(R.id.searchView); // Récupérer la référence de la SearchView dans le fragment*/
 
         // On cache les items de la catégorie
-        itemRecyclerView.setVisibility(View.GONE);
+        subCategoryRecyclerView.setVisibility(View.GONE);
 
         // On affiche les items de la catégorie si on clique sur la catégorie
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // On affiche les items de la catégorie si ils sont cachés, sinon on les cache
-                if (itemRecyclerView.getVisibility() == View.GONE) {
-                    expandRecyclerView(itemRecyclerView);
+                if (subCategoryRecyclerView.getVisibility() == View.GONE) {
+                    expandRecyclerView(subCategoryRecyclerView);
                     rotateArrow(imageArrow, 0f, 180f); // Rotation vers le haut (180 degrés)
                 } else {
-                    collapseRecyclerView(itemRecyclerView);
+                    collapseRecyclerView(subCategoryRecyclerView);
                     rotateArrow(imageArrow, 180f, 0f); // Rotation vers le bas (180 degrés)
                 }
             }
@@ -203,8 +199,8 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder {
         category.loadImage(image);
 
         // Mettez en place l'adaptateur pour le RecyclerView des articles
-        ItemAdapter itemAdapter = new ItemAdapter(category.getItems());
-        itemRecyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
-        itemRecyclerView.setAdapter(itemAdapter);
+        SubCategoryAdapter subCategoryAdapter = new SubCategoryAdapter(category.getSubCategorys(), root);
+        subCategoryRecyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
+        subCategoryRecyclerView.setAdapter(subCategoryAdapter);
     }
 }

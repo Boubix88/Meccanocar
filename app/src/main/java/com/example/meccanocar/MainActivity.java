@@ -26,6 +26,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.example.meccanocar.databinding.ActivityMainBinding;
 
+import java.io.File;
+
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
@@ -33,9 +35,13 @@ public class MainActivity extends AppCompatActivity {
     private static final int NAVIGATION_DASHBOARD = R.id.navigation_dashboard;
     private static final int NAVIGATION_NOTIFICATIONS = R.id.navigation_notifications;
 
+    public static File EXTERNAL_STORAGE_PATH;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        EXTERNAL_STORAGE_PATH = this.getExternalFilesDir("");
 
         // Vérification de la version d'Android
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {

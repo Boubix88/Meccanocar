@@ -17,9 +17,9 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.meccanocar.R;
 import com.example.meccanocar.databinding.FragmentHomeBinding;
-import com.example.meccanocar.model.Item;
+import com.example.meccanocar.model.SubCategory;
 import com.example.meccanocar.model.News;
-import com.example.meccanocar.ui.adapter.ItemAdapter;
+import com.example.meccanocar.ui.adapter.SubCategoryAdapter;
 import com.example.meccanocar.ui.adapter.NewsAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -30,7 +30,7 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private RecyclerView recyclerView;
-    private ItemAdapter itemAdapter;
+    private SubCategoryAdapter subCategoryAdapter;
     private TextView textViewNoLastItem;
     private ViewPager2 viewPager;
     private List<News> newsList; // Votre liste de news
@@ -57,17 +57,17 @@ public class HomeFragment extends Fragment {
         // Récupération de la RecyclerView
         recyclerView = root.findViewById(R.id.recyclerViewHome);
 
-        // Liste des 5 derniers items vus
-        List<Item> items = homeViewModel.getLast5ItemsViewed();
+        // Liste des 5 derniers subCategories vus
+        List<SubCategory> subCategories = homeViewModel.getLast5ItemsViewed();
 
         // Création de l'adaptateur et liaison avec la ListView
-        itemAdapter = new ItemAdapter(items);
+        subCategoryAdapter = new SubCategoryAdapter(subCategories, root);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext())); // A ajouter sinon rien ne s'affiche
-        recyclerView.setAdapter(itemAdapter);
+        recyclerView.setAdapter(subCategoryAdapter);
 
-        //itemAdapter.notifyDataSetChanged();
+        //subCategoryAdapter.notifyDataSetChanged();
 
-        if (items != null && items.size() == 0) {
+        if (subCategories != null && subCategories.size() == 0) {
             textViewNoLastItem.setVisibility(View.VISIBLE);
         } else {
             textViewNoLastItem.setVisibility(View.GONE);

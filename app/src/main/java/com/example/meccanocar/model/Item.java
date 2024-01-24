@@ -1,27 +1,33 @@
 package com.example.meccanocar.model;
 
-import java.io.Serializable;
+import android.graphics.Bitmap;
 
-public class Item implements Serializable {
+public class Item {
     private String name;
-    private String link;
-    private int id;
+    private String description;
+    private String ref;
+    private Bitmap bmp;
 
-    public Item(String n, String l, int id){
+    public Item(String n, String d, String r, Bitmap bmp){
         this.name = n;
-        this.link = l;
-        this.id = id;
+        this.description = d;
+        this.ref = r;
+        this.bmp = bmp;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getLink() {
-        return link;
+    public String getDescription() {
+        return description;
     }
 
-    public int getCategoryId(){
-        return id;
+    public String getRef() {
+        return ref;
+    }
+
+    public Bitmap getBitmap() {
+        return bmp;
     }
 }

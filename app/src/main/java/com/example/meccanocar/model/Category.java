@@ -2,16 +2,13 @@ package com.example.meccanocar.model;
 
 import android.widget.ImageView;
 
-import com.example.meccanocar.MainActivity;
 import com.squareup.picasso.Picasso;
-
-import org.jsoup.nodes.Element;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Category implements Serializable {
-    private ArrayList<Item> category;
+    private ArrayList<SubCategory> category;
     private String name;
     private String urlImage;
     private int id;
@@ -23,15 +20,15 @@ public class Category implements Serializable {
         this.id = id;
     }
 
-    public void addItem(Item item) {
-        this.category.add(item);
+    public void addSubCategory(SubCategory subCategory) {
+        this.category.add(subCategory);
     }
 
     public String getName() {
         return name;
     }
 
-    public ArrayList<Item> getItems() {
+    public ArrayList<SubCategory> getSubCategorys() {
         return category;
     }
 
@@ -42,7 +39,7 @@ public class Category implements Serializable {
 
     public String toStringItems(){
         StringBuilder builder = new StringBuilder();
-        for(Item i : category){
+        for(SubCategory i : category){
             builder.append(i.getName() + "\n");
         }
         return builder.toString();

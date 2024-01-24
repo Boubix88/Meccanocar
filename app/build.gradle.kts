@@ -29,6 +29,12 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    packagingOptions {
+        exclude("META-INF/DEPENDENCIES")
+        exclude("META-INF/LICENSE.md")
+        exclude("META-INF/LICENSE-notice.md")
+    }
 }
 
 dependencies {
@@ -48,4 +54,6 @@ dependencies {
     implementation("org.jsoup:jsoup:1.14.3")
     implementation("com.squareup.picasso:picasso:2.8")
     implementation("com.google.code.gson:gson:2.8.8")
+    implementation("com.tom-roush:pdfbox-android:2.0.27.0")
+    implementation("commons-io:commons-io:2.15.1")
 }
