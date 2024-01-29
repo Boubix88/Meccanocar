@@ -11,4 +11,5 @@
     <string name="search_no_result">Aucun résultat</string>
     <string name="last_items_text">Les 5 derniers catalogues consultés</string>
     <string name="no_last_item">Aucun catalogue consulté</string>
+    <string name="loading">Chargement ...</string>
 </resources>

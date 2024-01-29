@@ -1,0 +1,141 @@
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        app:cardCornerRadius="2dp">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:rotation="90"
+            android:src="@drawable/ic_arrow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-5dp"
+            android:layout_marginTop="1dp"
+            android:text="@string/back_text"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/backButton"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageViewItemsDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            app:layout_constraintBottom_toTopOf="@+id/titleItemsDetails"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/backButton" />
+
+        <TextView
+            android:id="@+id/titleItemsDetails"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Titre"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/imageViewItemsDetails"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewItemsDetails" />
+
+        <!-- Recap -->
+        <TextView
+            android:id="@+id/descriptionItemsDetails"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Description"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/imageViewItemsDetails"
+            app:layout_constraintTop_toBottomOf="@+id/titleItemsDetails" />
+
+        <TableLayout
+            style="@style/frag1TableLayout"
+            android:layout_marginTop="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionItemsDetails">
+
+            <TableRow style="@style/frag1HeaderTableRow"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    style="@style/frag1HeaderCol"
+                    android:text="Code" />
+
+                <TextView
+                    style="@style/frag1HeaderCol"
+                    android:text="Desc." />
+
+                <TextView
+                    style="@style/frag1HeaderCol"
+                    android:text="Contenu" />
+            </TableRow>
+
+            <TableRow style="@style/frag1TableRow">
+
+                <TextView
+                    style="@style/frag1Col"
+                    android:text="124" />
+
+                <TextView
+                    style="@style/frag1Col"
+                    android:text="-125" />
+
+                <TextView
+                    style="@style/frag1Col"
+                    android:text="-125" />
+            </TableRow>
+
+            <TableRow style="@style/frag1TableRow">
+
+                <TextView
+                    style="@style/frag1Col"
+                    android:text="345" />
+
+                <TextView
+                    style="@style/frag1Col"
+                    android:text="-120" />
+
+                <TextView
+                    style="@style/frag1Col"
+                    android:text="-125" />
+            </TableRow>
+
+            <TableRow style="@style/frag1TableRow">
+
+                <TextView
+                    style="@style/frag1Col"
+                    android:text="245" />
+
+                <TextView
+                    style="@style/frag1Col"
+                    android:text="-120" />
+
+                <TextView
+                    style="@style/frag1Col"
+                    android:text="-120" />
+            </TableRow>
+        </TableLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

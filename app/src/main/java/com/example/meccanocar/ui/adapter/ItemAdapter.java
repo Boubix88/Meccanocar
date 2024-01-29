@@ -1,6 +1,7 @@
 package com.example.meccanocar.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,10 @@ import android.widget.TextView;
 import com.example.meccanocar.R;
 import com.example.meccanocar.model.Item;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 public class ItemAdapter extends BaseAdapter {

@@ -64,10 +64,10 @@
         android:id="@+id/itemsGridView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margintop="5dp"
+        android:layout_marginTop="5dp"
         android:numColumns="2"
         android:horizontalSpacing="10dp"
-        android:verticalSpacing="10dp"
+        android:verticalSpacing="20dp"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/searchView"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -86,6 +86,48 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
+    <ImageView
+        android:id="@+id/catalog_logo_left"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginRight="10dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/catalog_logo_middle"
+        app:layout_constraintTop_toTopOf="@+id/catalog_logo_middle"
+        app:srcCompat="@drawable/meccanocar_cercle_gauche" />
 
+    <ImageView
+        android:id="@+id/catalog_logo_middle"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="168dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchView"
+        app:layout_constraintVertical_bias="0.399"
+        app:srcCompat="@drawable/meccanocar_cercle_milieu" />
+
+    <ImageView
+        android:id="@+id/catalog_logo_right"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginLeft="10dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/catalog_logo_middle"
+        app:layout_constraintTop_toTopOf="@+id/catalog_logo_middle"
+        app:srcCompat="@drawable/meccanocar_cercle_droite" />
+
+    <TextView
+        android:id="@+id/textViewLoadingItems"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="144dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/loading"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/catalog_logo_middle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
