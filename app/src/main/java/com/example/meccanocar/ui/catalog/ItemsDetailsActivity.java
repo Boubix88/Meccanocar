@@ -1,7 +1,11 @@
 package com.example.meccanocar.ui.catalog;
 
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,6 +47,9 @@ public class ItemsDetailsActivity extends AppCompatActivity {
                 String tmp = item.getDescription().replaceAll("•", "\n\n•  ");
 
                 descriptionTextView.setText(tmp);
+
+                // On set le tableau de référence
+                setTabRef(item.getTabRef());
             }
         }
 
@@ -53,5 +60,39 @@ public class ItemsDetailsActivity extends AppCompatActivity {
         // Gestion du texte clicable pour retourner en arrière
         TextView textViewBack = findViewById(R.id.textViewBack);
         textViewBack.setOnClickListener(view -> finish());
+    }
+
+    public void setTabRef(String[][] tabRef) {
+        // Récupérer la référence du TableLayout
+        TableLayout tableLayout = findViewById(R.id.tableLayoutItemsDetails);
+
+        // Boucle à travers les colonnes (changement ici)
+        for (int j = 0; j < tabRef[0].length; j++) {
+            TableRow tableRow = new TableRow(this);
+
+            // Boucle à travers les lignes (changement ici)
+            for (int i = 0; i < tabRef.length; i++) {
+                TextView textView = new TextView(this);
+                if (j == 0) {
+                    textView.setBackground(getDrawable(R.drawable.tableborderheader));
+                    // On met le texte en gras
+                    textView.setTextAppearance(R.style.frag1HeaderCol);
+                } else {
+                    textView.setBackground(getDrawable(R.drawable.tableborder));
+                }
+                textView.setGravity(Gravity.CENTER);
+                textView.setTextColor(getResources().getColor(R.color.black));
+                textView.setTextSize(14);
+
+                // Configurez le style et le texte du TextView
+                textView.setText(tabRef[i][j]);
+
+                // Ajoutez le TextView à la ligne actuelle
+                tableRow.addView(textView);
+            }
+
+            // Ajoutez la ligne au TableLayout
+            tableLayout.addView(tableRow);
+        }
     }
 }

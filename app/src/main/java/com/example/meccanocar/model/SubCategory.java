@@ -85,6 +85,8 @@ public class SubCategory implements Serializable {
             //ArrayList<ArrayList<String>> tableHeader = new ArrayList<>();
             final String[][][] table = {new String[0][0]};
             ArrayList<String[][]> allTable = new ArrayList<>();
+            ArrayList<Integer> nbCol = new ArrayList<>();
+            ArrayList<Integer> nbRow = new ArrayList<>();
 
             final int[] indexitem = {-1};
             final int[] indexTableCol = {-1};
@@ -129,9 +131,14 @@ public class SubCategory implements Serializable {
                             // On mets à jour l'index si on change d'item
                             if (text.getFont().getName().contains("Bold") && lastheight[0] != text.getHeight()) { // ATTENTION derniere condition a l'arrache sinon buga avec tableau dans pdf collage
                                 indexitem[0]++;
+
+                                indexTableRow[0] = 0;
+
                                 //tableHeader.removeAll(tableHeader); // on vide le tableau de reference
                                 // On reinitialise tableaHeader
                                 table[0] = new String[0][0];
+                                nbCol.add(0);
+                                nbRow.add(0);
                             }
 
                             if (itemTitle.isEmpty()) {
@@ -143,7 +150,7 @@ public class SubCategory implements Serializable {
                                     itemTitle.set(indexitem[0], itemTitle.get(indexitem[0]) + text.getUnicode());
                                 }
                             }
-                        } else { // description de l'item
+                        } else if (text.getHeight() > 5.4) { // description de l'item
                             if (text.getUnicode().equals("•")) {
                                 //description.get(indexitem) += "--";
                                 //System.out.println("[test]Point ? " + (String) parsedText.toString() + (String)text.getUnicode());
@@ -162,91 +169,9 @@ public class SubCategory implements Serializable {
 
                         // On récupère le tableau de reference
                         if (text.getHeight() > 5.0 && text.getHeight() < 5.4) {
-                            /*if (table.isEmpty()) {
-                                table.add(text.getUnicode());
-                            } else {
-                                if (indexitem[0] >= table.size()) {
-                                    //tableau a revoir pas tout le temps le meme
-                                    //System.out.println("[test]indexitem : " + indexitem[0] + " list : " + table.toString());
-                                    table.add(indexitem[0], text.getUnicode());
-                                } else {
-                                    table.set(indexitem[0], table.get(indexitem[0]) + text.getUnicode());
-                                }
-                            }*/
-
-                            // Première ligne du tableau
-                            //if (text.getFont().getName().contains("Bold")) {
-                                // Supposons que vous ayez une référence à votre ArrayList<ArrayList<String>> tableHeader
-                                //System.out.println("[test]Tableau : " + tableHeader);
-                                // Affichage du tableau
-                                /*for (ArrayList<String> column : tableHeader) {
-                                    for (String cell : column) {
-                                        for (int i = 0; i < cell.length(); i++) {
-                                            System.out.print(cell.charAt(i));
-                                        }
-                                        System.out.print("\t"); // Vous pouvez remplacer System.out.print par la méthode que vous utilisez pour afficher les éléments
-                                    }
-                                    System.out.println(); // Nouvelle ligne après chaque colonne
-                                }*/
-                                //System.out.println("[test] Nb colonnes : " + tableHeader.size() + " Nb lignes : " + tableHeader.get(0).size());
-
-
-                                // On ajoute une nouvelle colonne si l'arry est vide ou si on est passé à la colonne suivante
-                                /*if (tableHeader.isEmpty() || indexTableCol[0] >= tableHeader.size()) {
-                                    /*ArrayList<String> tmp = new ArrayList<>();
-                                    tmp.add(text.getUnicode());
-                                    tableHeader.add(indexTableCol[0], tmp);*/
-                                    /*tableHeader.add(indexTableCol[0], new ArrayList<>());
-                                }*/
-
-                                // On ajoute le texte a la colonne courante
-
-                                // On verifie si la ligne existe
-                                /*if (tableHeader.get(indexTableCol[0]) != null && indexTableRow[0] >= tableHeader.get(indexTableCol[0]).size()) {
-                                    ArrayList<String> tmp = new ArrayList<>();
-                                    tmp.add(text.getUnicode());
-                                    tableHeader.get(indexTableCol[0]).add(tmp);
-                                } else {
-                                    String tmp = tableHeader.get(indexTableCol[0]).get(indexTableRow[0]);
-                                    tableHeader.get(indexTableCol[0]).set(indexTableRow[0], tmp + text.getUnicode());
-                                }*/
-                            //}
-
-
-                            /*if (textX < lastTextX[0]) {
-                                // On repasse à la première colonne
-                                indexTableCol[0] = 0;
-                            }
-
-                            if (textX + 20 > lastTextX[0]) {
-                                // On passe à la colonne suivante
-                                indexTableCol[0]++;
-                            }
-
-                            if (textY + 6 > lastTextY[0]) {
-                                // On passe à la ligne suivante
-                                indexTableRow[0]++;
-                            }
-
-                            lastTextX[0] = textX;
-                            lastTextY[0] = textY;*/
-
-                            //System.out.println("[test]Tableau : " + tableHeader);
-                            /*for (ArrayList<String> column : tableHeader) {
-                                for (String cell : column) {
-                                    System.out.print(cell + "\t");
-                                }
-                                System.out.println();
-                            }*/
-
-                            System.out.print("[test]X : " + textX + " lastX : " + lastTextX[0] + " taille : " + text.getWidth());
+                            /*System.out.print("[test]X : " + textX + " lastX : " + lastTextX[0] + " taille : " + text.getWidth());
                             System.out.print(" -- Nb colonne : " + indexTableCol[0] + " Nb ligne : " + indexTableRow[0]);
-                            System.out.print(" -- " + text.getUnicode());
-
-                            /*if (tableHeader.isEmpty()) {
-                                lastTextX[0] = textX - text.getWidth();
-                                lastTextY[0] = textY - text.getHeight();
-                            }*/
+                            System.out.println(" -- " + text.getUnicode());*/
 
                             if (textX < lastTextX[0]) {
                                 // On repasse à la première colonne
@@ -263,11 +188,18 @@ public class SubCategory implements Serializable {
                                 indexTableRow[0]++;
                             }
 
-                            // Dans la case d'index [indexTableCol][indexTableRow] on ajoute le carattere text.uniCode au mot deja present dans la case si'il y en a un sinon on ajouter le caractere et augmentant dynamiquement la taille du tableau de strin
-                            // On ajoute une nouvelle colonne si l'arry est vide ou si on est passé à la colonne suivante
-                            // Ajout d'une nouvelle colonne si nécessaire
+                            // On met à jour le nombre de colonnes et de lignes
+                            if (indexTableCol[0] >= nbCol.get(indexitem[0])) {
+                                nbCol.set(indexitem[0], indexTableCol[0]);
+                            }
+
+                            if (indexTableRow[0] > nbRow.get(indexitem[0])) {
+                                nbRow.set(indexitem[0], indexTableRow[0]);
+                            }
+
+                            // On ajoute un nouveau tableau si l'arry est vide ou si on est passé à la colonne suivante sinon on rempli le tableau courant
                             if (allTable.isEmpty() || indexitem[0] >= allTable.size()) {
-                                String[][] table = new String[50][50];
+                                String[][] table = new String[10][30]; // Mettre dynamiquement la taille
 
                                 // Boucle pour initialiser chaque élément avec une chaîne vide
                                 for (int i = 0; i < table.length; i++) {
@@ -277,46 +209,18 @@ public class SubCategory implements Serializable {
                                 }
 
                                 allTable.add(table);
-                            } else {
-                                // Réinitialisation du tableau actuel si on passe à la colonne suivante
-                                //allTable.get(indexitem[0]) = new String[indexTableCol[0]][indexTableRow[0]];
                             }
 
                             // Ajout du texte à la case courante du tableau
                             String[][] currentTable = allTable.get(indexitem[0]);
                             currentTable[indexTableCol[0]][indexTableRow[0]] += text.getUnicode();
 
-                            // Ajout d'une nouvelle colonne si nécessaire
-                            /*if (tableHeader[0].isEmpty() || indexTableCol[0] >= tableHeader[0].size()) {
-                                tableHeader[0].add(new ArrayList<>());
-                            } else {
-                                tableHeader[0].add(indexTableCol[0], new ArrayList<>());
-                            }*/
-
-                            // Ajout du texte à la colonne courante
-                            //ArrayList<String> currentColumn = tableHeader[0].get(indexTableCol[0]);
-                            //System.out.println(" -- " + currentColumn.size() + " " + indexTableRow[0]);
-                            /*if (indexTableRow[0] > currentColumn.size()) {
-                                currentColumn.add(text.getUnicode());
-                            } else {
-                                String tmp = currentColumn.get(indexTableRow[0]);
-                                currentColumn.set(indexTableRow[0], tmp + text.getUnicode());
-                                System.out.println("[test]Ajout du texte à la colonne courante : " + tmp + " " + text.getUnicode());
-                            }*/
-
-                            // On ajoute a tableau
-                            /*if (tableau.isEmpty() || indexitem[0] >= tableau.size()) {
-                                tableau.add(indexitem[0], tableHeader[0]);
-                            } else {
-                                tableau.set(indexitem[0], tableHeader[0]);
-                            }*/
-
                             // Mise à jour des dernières positions
                             lastTextX[0] = textX;
                             lastTextY[0] = textY;
 
                             //System.out.println(" -- Tableau : " + tableau.get(indexitem[0]).get(0).get(0));
-                            System.out.println(" -- Tableau : " + allTable.get(indexitem[0])[indexTableCol[0]][indexTableRow[0]]);
+                            //System.out.println(" -- Tableau : " + allTable.get(indexitem[0])[indexTableCol[0]][indexTableRow[0]]);
                         }
 
                         lastheight[0] = text.getHeight();
@@ -329,8 +233,8 @@ public class SubCategory implements Serializable {
                     pdfStripper.getText(document);
                     images.addAll(getImagesFromResources(pdfStripper.getCurrentPage().getResources(), 60.0f, 800.0f));
 
+                    // On réinitialise l'index de la colonne et de la ligne
                     indexTableCol[0] = 0;
-                    indexTableRow[0] = 0;
                 }
             } catch (IOException e) {
                 Log.e("[test]PdfBox-Android-Sample", "Exception thrown while stripping text", e);
@@ -342,21 +246,32 @@ public class SubCategory implements Serializable {
                 }
             }
 
-            System.out.println("[test]Nombre d'images extraites : " + images.size());
+            //System.out.println("[test]Nombre d'images extraites : " + images.size());
 
             // On crée les items
             //System.out.println("[test]Nombre d'items : " + itemTitle.size() + " " + description.size() + " " + table.size() + " " + images.size());
             for (int k = 0; k < itemTitle.size(); k++) {
                 //String finalText = parsedText.toString().replaceAll("--", "\n").toString();
-                System.out.println("[test] titres items : " + itemTitle.get(k));
-                System.out.println("[test]descritpion du pdf : " + description.get(k));
+                //System.out.println("[test] titres items : " + itemTitle.get(k));
+                //System.out.println("[test]descritpion du pdf : " + description.get(k));
                 //System.out.println("[test]tableau de reference : " + table.get(k));
                 //System.out.println("[test]Colonnes : " + tableHeader);
-                /*System.out.println("[test]Premiere case : " + allTable.get(k).get(0).get(0));
-                System.out.println("[test]Deuxième case : " + allTable.get(k).get(1).get(0));*/
+                //System.out.println("[test]Premiere case : " + allTable.get(k)[0][0]);
+                //System.out.println("[test]Deuxième case : " + allTable.get(k)[1][0]);
+
+
+                // On copie le tableau de référence dans un tableau de String[][] ayant la bonne taille
+                int startRow = getStartIndexRowFromTab(allTable.get(k));
+
+                String[][] tableTmp = new String[nbCol.get(k) + 1][nbRow.get(k) + 1 - startRow];
+                for (int i = 0; i < nbCol.get(k) + 1; i++) {
+                    for (int j = 0; j < tableTmp[i].length; j++) {
+                        tableTmp[i][j] = allTable.get(k)[i][j + startRow];
+                    }
+                }
 
                 // On crée un nouvel item avec son nom et le lien de son pdf
-                Item item = new Item(itemTitle.get(k), description.get(k), "", images.get(k), context); // modifier le ""
+                Item item = new Item(itemTitle.get(k), description.get(k), tableTmp, images.get(k), context);
 
                 // On ajoute les items à la sous catégorie
                 items.add(item);
@@ -364,6 +279,26 @@ public class SubCategory implements Serializable {
         }
 
         return items;
+    }
+
+    public int getStartIndexRowFromTab(String[][] tab){
+        int startRow = 0;
+        boolean empty = false;
+
+        for(int i = 0; i < tab.length; i++){
+            for(int j = 0; j < tab[i].length; j++){
+                empty = tab[i][j].equals("");
+
+                // Si la case actuelle et la suivante sont vides, on retourne 0
+                if (empty && tab[i][j + 1].equals("")) {
+                    return startRow;
+                } else if (empty) { // Sinon on retourne la ligne suivante
+                    return j + 1;
+                }
+            }
+        }
+
+        return startRow;
     }
 
     private List<Bitmap> getImagesFromResources(PDResources resources, float upperLimit, float lowerLimit) throws IOException {

@@ -3,35 +3,26 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import com.example.meccanocar.R;
-
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 
 public class Item implements Parcelable {
     private static final long serialVersionUID = 1L;
 
     private String name;
     private String description;
-    private String ref;
+    private String[][] tabRef;
     private byte[] bmp;
     private Context context;
 
-    public Item(String n, String d, String r, Bitmap bmp, Context context) {
+    public Item(String n, String d, String[][] r, Bitmap bmp, Context context) {
         this.name = n;
         this.description = d;
-        this.ref = r;
+        this.tabRef = r;
         this.bmp = convertBitmapToByteArray(bmp);
         this.context = context;
     }
@@ -39,7 +30,17 @@ public class Item implements Parcelable {
     protected Item(Parcel in) {
         name = in.readString();
         description = in.readString();
-        ref = in.readString();
+
+        // Lecture du nombre de lignes et de colonnes dans le tableau bidimensionnel
+        int rows = in.readInt();
+        int cols = in.readInt();
+
+        // Lecture du tableau bidimensionnel depuis le Parcel
+        tabRef = new String[rows][cols];
+        for (int i = 0; i < rows; i++) {
+            tabRef[i] = in.createStringArray();
+        }
+
         bmp = in.createByteArray();
     }
 
@@ -63,8 +64,8 @@ public class Item implements Parcelable {
         return description;
     }
 
-    public String getRef() {
-        return ref;
+    public String[][] getTabRef() {
+        return tabRef;
     }
 
     public Bitmap getBitmap() {
@@ -96,7 +97,16 @@ public class Item implements Parcelable {
     public void writeToParcel(@NonNull Parcel parcel, int i) {
         parcel.writeString(name);
         parcel.writeString(description);
-        parcel.writeString(ref);
+
+        // Utilisez writeInt pour écrire le nombre de lignes et de colonnes dans le tableau bidimensionnel
+        parcel.writeInt(tabRef.length);
+        parcel.writeInt(tabRef.length > 0 ? tabRef[0].length : 0);
+
+        // Utilisez writeStringArray pour écrire un tableau de chaînes
+        for (String[] row : tabRef) {
+            parcel.writeStringArray(row);
+        }
+
         parcel.writeByteArray(bmp);
     }
 }
