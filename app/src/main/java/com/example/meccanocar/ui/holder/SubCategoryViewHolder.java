@@ -102,6 +102,7 @@ public class SubCategoryViewHolder extends RecyclerView.ViewHolder {
                     @Override
                     protected ArrayList<Item> doInBackground(Void... voids) {
                         // Effectuez votre traitement de chargement ici
+
                         return subCategory.getItems();
                     }
 

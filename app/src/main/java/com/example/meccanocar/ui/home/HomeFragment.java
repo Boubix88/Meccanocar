@@ -101,7 +101,7 @@ public class HomeFragment extends Fragment {
                 viewPager,
                 (tab, position) -> {
                     // On met à jour le titre de chaque onglet
-                    tab.setText("News " + (position + 1));
+                    tab.setIcon(R.drawable.point_tablayout);
                 }
         );
         tabLayoutMediator.attach();

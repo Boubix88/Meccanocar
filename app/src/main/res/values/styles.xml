@@ -6,6 +6,12 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="MyCardViewStyle">
+        <item name="android:radius">8dp</item>
+        <item name="android:elevation">5dp</item>
+        <item name="android:background">@color/text_primary</item>
+    </style>
+
     <style name="frag1TableLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

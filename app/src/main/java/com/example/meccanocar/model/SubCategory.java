@@ -1,14 +1,21 @@
 package com.example.meccanocar.model;
 
 import android.app.DownloadManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.core.content.FileProvider;
+
+import com.example.meccanocar.MainActivity;
 import com.tom_roush.pdfbox.android.PDFBoxResourceLoader;
 import com.tom_roush.pdfbox.cos.COSName;
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
@@ -52,27 +59,55 @@ public class SubCategory implements Serializable {
 
             // Si c'est pas un catalogue bizarre
             File file = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), this.name + ".pdf");
+            DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+            int downloadID = 0;
+            // using query method
+            boolean finishDownload = false;
+
             try {
                 if (!file.exists()) {
-                    DownloadManager.Request request = new DownloadManager.Request(Uri.parse(URL + this.link));
-                    request.setTitle(this.name);
-                    request.setDescription("Downloading PDF");
+                    System.out.println("[test] Téléchargement du pdf : " + this.name + " "  + this.link);
+                    DownloadManager.Request request = new DownloadManager.Request(Uri.parse(this.link))
+                            .setTitle(this.name)
+                            .setDescription("Downloading PDF")
+                            .setRequiresCharging(false)// Set if charging is required to begin the download
+                            .setAllowedOverMetered(true)// Set if download is allowed on Mobile network
+                            .setAllowedOverRoaming(true)// Set if download is allowed on roaming network
+                            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                            .setDestinationUri(Uri.fromFile(file));
 
                     // Définir le dossier de destination pour le téléchargement
                     request.setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, this.name + ".pdf");
-
-                    // Obtenir le gestionnaire de téléchargement du système
-                    DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 
                     // Soumettre la demande de téléchargement au gestionnaire de téléchargement
                     if (downloadManager != null) {
                         downloadManager.enqueue(request);
                     }
 
+                    // On récupère l'id du téléchargement
+                    downloadID = (int) downloadManager.enqueue(request);
+
                     file = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), this.name + ".pdf");
+                } else {
+                    finishDownload = true;
                 }
             } catch (Exception e) {
                 Log.e("[test]", "Exception thrown while stripping text", e);
+            }
+
+            // On attend que le téléchargement soit terminé
+            while (!finishDownload) {
+                DownloadManager.Query query = new DownloadManager.Query();
+                query.setFilterById(downloadID);
+                Cursor cursor = downloadManager.query(query);
+                if (cursor.moveToFirst()) {
+                    int columnIndex = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS);
+                    int status = cursor.getInt(columnIndex);
+                    if (status == DownloadManager.STATUS_SUCCESSFUL) {
+                        finishDownload = true;
+                    }
+                }
+                cursor.close();
             }
 
             PDFBoxResourceLoader.init(context);
@@ -279,6 +314,20 @@ public class SubCategory implements Serializable {
         }
 
         return items;
+    }
+
+    // Fonction pour ouvrir le PDF avec une application spécifique
+    private void openPdfWithApp(File file, Context context) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
+        intent.setDataAndType(uri, "application/pdf");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        try {
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            // Gérer l'exception si aucune application capable de lire les PDF n'est trouvée
+            //Toast.makeText(context, "Aucune application pour ouvrir les PDF n'est installée.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public int getStartIndexRowFromTab(String[][] tab){
