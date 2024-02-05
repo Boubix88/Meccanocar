@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment"
-    android:background="@color/background">
+    android:background="?colorBackground">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageViewLogo"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="-120dp"
@@ -19,7 +20,7 @@
         tools:layout_editor_absoluteY="0dp" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/imageViewBackgroudTitle"
         android:layout_width="140dp"
         android:layout_height="48dp"
         android:layout_marginTop="2dp"
@@ -29,19 +30,18 @@
         app:srcCompat="@color/green_100" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imageViewMinus"
         android:layout_width="60dp"
         android:layout_height="48dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="-20dp"
         android:background="@drawable/header_background_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintEnd_toStartOf="@id/imageView3"
+        app:layout_constraintEnd_toStartOf="@id/imageViewBackgroudTitle"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/meccanocar_cercle_gauche"
-    />
+        />
 
     <TextView
         android:id="@+id/textViewHome"
@@ -52,128 +52,143 @@
         android:textSize="28sp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="-4dp"
-        app:layout_constraintStart_toStartOf="@id/imageView3"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintEnd_toEndOf="@id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/imageView3"
+        app:layout_constraintStart_toStartOf="@id/imageViewBackgroudTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewBackgroudTitle"
+        app:layout_constraintEnd_toEndOf="@id/imageViewBackgroudTitle"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBackgroudTitle"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintVertical_bias="0.5" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewHome"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLogo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        android:fillViewport="true">
 
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="260dp"
-        android:layout_height="30dp"
-        android:src="@drawable/under_title"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:src="@drawable/test"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="-5dp"
-        app:layout_constraintStart_toEndOf="@id/imageView5"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="10dp"
-        android:text="@string/last_items_text"
-        android:textSize="18sp"
-        android:textColor="@color/white"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
-    <TextView
-        android:id="@+id/textViewNoLastItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/no_last_item"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-    <!-- Ajoutez le ViewPager2 pour le carrousel -->
-    <androidx.cardview.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/cardView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintBottom_toTopOf="@id/tabLayout"
-        app:layout_constraintStart_toStartOf="parent"
-
-        card_view:cardBackgroundColor="@color/color_on_background_card"
-        card_view:cardCornerRadius="8dp"
-        card_view:cardElevation="8dp">
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/scrollLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/background" />
+            android:background="?colorBackground">
 
-    </androidx.cardview.widget.CardView>
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="240dp"
+                android:layout_height="30dp"
+                android:src="@drawable/under_title"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/scrollLayout" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:src="@drawable/test"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="-5dp"
+                app:layout_constraintStart_toEndOf="@id/imageView5"
+                app:layout_constraintTop_toTopOf="@+id/scrollLayout" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:layout_marginStart="10dp"
+                android:text="@string/last_items_text"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/scrollLayout" />
+
+            <TextView
+                android:id="@+id/textViewNoLastItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/no_last_item"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewHome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="15dp"
+                android:layoutDirection="rtl"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:src="@drawable/test"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="-2dp"
+                app:layout_constraintTop_toBottomOf="@id/recyclerViewHome"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="32dp"
+                android:textSize="18sp"
+                android:text="News"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/recyclerViewHome"
+                app:layout_constraintStart_toStartOf="@id/imageView7" />
+
+            <!-- Ajoutez le ViewPager2 pour le carrousel -->
+            <androidx.cardview.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/cardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@id/textView3"
+                app:layout_constraintStart_toStartOf="parent"
+
+                card_view:cardBackgroundColor="?colorOnBackgroundCard"
+                card_view:cardCornerRadius="8dp"
+                card_view:cardElevation="8dp">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?colorOnBackgroundCard" />
+
+            </androidx.cardview.widget.CardView>
 
 
-    <!-- Ajoutez le TabLayout pour les indicateurs -->
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="10dp"
-        app:tabGravity="center"
-        app:tabMode="scrollable"
-        android:background="@color/background"
-        app:tabIndicatorHeight="0dp"/>
-
-    <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:src="@drawable/test"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="-2dp"
-        android:layout_marginBottom="11dp"
-        app:layout_constraintBottom_toTopOf="@+id/cardView"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="15dp"
-        android:textSize="18sp"
-        android:text="News"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/cardView"
-        app:layout_constraintStart_toStartOf="@id/imageView7" />
+            <!-- Ajoutez le TabLayout pour les indicateurs -->
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginBottom="10dp"
+                app:tabGravity="center"
+                app:tabMode="scrollable"
+                android:background="?colorBackground"
+                app:tabIndicatorHeight="0dp"
+                app:layout_constraintTop_toBottomOf="@id/cardView" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

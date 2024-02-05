@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Meccanocar"
+        android:theme="@style/Theme_MeccanocarLight"
         tools:targetApi="31"
         android:hardwareAccelerated="true"
         android:largeHeap="true"

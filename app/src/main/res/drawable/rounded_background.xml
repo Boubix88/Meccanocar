@@ -2,6 +2,6 @@
 <!-- res/drawable/background_rounded.xml -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="@color/color_on_background_card" /> <!-- Couleur de fond du ViewPager2 -->
+    <solid android:color="?colorOnBackgroundCard" /> <!-- Couleur de fond du ViewPager2 -->
     <corners android:radius="5dp" /> <!-- Rayon du coin, ajustez selon vos préférences -->
 </shape>

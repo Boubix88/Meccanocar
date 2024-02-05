@@ -5,7 +5,17 @@
     <string name="open_pdf_error">Error while opening PDF</string>
     <string name="no_pdf_viewer_error">Error : no PDF reader installed</string>
     <string name="search_no_result">No result</string>
-    <string name="last_items_text">The last 5 catalog viewed</string>
-    <string name="no_last_item">Aucun catalogue consulté</string>
+    <string name="last_items_text">The last 5 products viewed</string>
+    <string name="no_last_item">No product viewed</string>
     <string name="loading">Loading ...</string>
+    <string name="description_text">Description</string>
+    <string name="ref_text">References</string>
+    <string name="auto_language">Automatic</string>
+    <string name="language_text">Language</string>
+    <string name="theme_text">Theme</string>
+    <string name="light_theme">Light</string>
+    <string name="dark_theme">Dark</string>
+    <string name="version_code_text">Version</string>
+    <string name="version_name_text">Build number</string>
+    <string name="no_description">No description</string>
 </resources>

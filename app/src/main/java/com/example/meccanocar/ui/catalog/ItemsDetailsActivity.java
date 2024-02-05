@@ -1,8 +1,9 @@
 package com.example.meccanocar.ui.catalog;
 
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -12,7 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.meccanocar.R;
 import com.example.meccanocar.model.Item;
-import com.example.meccanocar.model.News;
+import com.example.meccanocar.utils.Language;
+import com.example.meccanocar.model.manager.MeccanocarManager;
+import com.example.meccanocar.utils.Settings;
 
 public class ItemsDetailsActivity extends AppCompatActivity {
     private ImageView imageView;
@@ -23,6 +26,9 @@ public class ItemsDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items_details);
+
+        // On set la langue de l'application
+        Language.setLanguage(getResources());
 
         // Masquer la barre d'action
         if (getSupportActionBar() != null) {
@@ -46,7 +52,11 @@ public class ItemsDetailsActivity extends AppCompatActivity {
 
                 String tmp = item.getDescription().replaceAll("•", "\n\n•  ");
 
-                descriptionTextView.setText(tmp);
+                if (!tmp.isEmpty()) {
+                    descriptionTextView.setText(tmp);
+                } else {
+                    descriptionTextView.setText("\n\n" + getString(R.string.no_description));
+                }
 
                 // On set le tableau de référence
                 setTabRef(item.getTabRef());
@@ -94,5 +104,32 @@ public class ItemsDetailsActivity extends AppCompatActivity {
             // Ajoutez la ligne au TableLayout
             tableLayout.addView(tableRow);
         }
+    }
+
+    @Override
+    public Resources.Theme getTheme() {
+        Settings settings = MeccanocarManager.getInstance().getSettings();
+        Resources.Theme theme = super.getTheme();
+
+        switch (settings.getTheme()) {
+            case "light":
+                theme.applyStyle(R.style.Theme_MeccanocarLight, true);
+                break;
+            case "dark":
+                theme.applyStyle(R.style.Theme_MeccanocarDark, true);
+                break;
+            case "auto":
+                switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
+                    case Configuration.UI_MODE_NIGHT_YES:
+                        theme.applyStyle(R.style.Theme_MeccanocarDark, true);
+                        break;
+                    case Configuration.UI_MODE_NIGHT_NO:
+                        theme.applyStyle(R.style.Theme_MeccanocarLight, true);
+                        break;
+                }
+                break;
+        }
+
+        return super.getTheme();
     }
 }

@@ -9,7 +9,17 @@
     <string name="open_pdf_error">Erreur lors de l\'ouverture du PDF</string>
     <string name="no_pdf_viewer_error">Erreur : aucun lecteur PDF installé</string>
     <string name="search_no_result">Aucun résultat</string>
-    <string name="last_items_text">Les 5 derniers catalogues consultés</string>
-    <string name="no_last_item">Aucun catalogue consulté</string>
+    <string name="last_items_text">Les 5 derniers produits consultés</string>
+    <string name="no_last_item">Aucun produit consulté</string>
     <string name="loading">Chargement ...</string>
+    <string name="description_text">Description</string>
+    <string name="ref_text">Références</string>
+    <string name="auto_language">Automatique</string>
+    <string name="language_text">Langue</string>
+    <string name="theme_text">Theme</string>
+    <string name="light_theme">Clair</string>
+    <string name="dark_theme">Sombre</string>
+    <string name="version_code_text">Version</string>
+    <string name="version_name_text">Numéro de version</string>
+    <string name="no_description">Aucune description</string>
 </resources>

@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    app:cardCornerRadius="2dp">
+    app:cardCornerRadius="2dp"
+    android:background="?colorBackground">
 
     <ImageButton
         android:id="@+id/backButton"
@@ -26,6 +27,7 @@
         android:layout_marginTop="1dp"
         android:text="@string/back_text"
         android:textSize="20sp"
+        android:textColor="?textColor"
         app:layout_constraintStart_toEndOf="@+id/backButton"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,6 +48,7 @@
         android:layout_height="wrap_content"
         android:text="Date"
         android:textSize="12sp"
+        android:textColor="?textColor"
         app:layout_constraintStart_toStartOf="@+id/imageViewNewsDetails"
         app:layout_constraintTop_toBottomOf="@+id/imageViewNewsDetails" />
 
@@ -56,6 +59,7 @@
         android:text="Titre"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="?textColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/imageViewNewsDetails"
         app:layout_constraintTop_toBottomOf="@+id/dateNewsDetails" />
@@ -68,6 +72,7 @@
         android:layout_marginTop="5dp"
         android:text="Recapitulatif"
         android:textSize="14sp"
+        android:textColor="?textColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/imageViewNewsDetails"
         app:layout_constraintTop_toBottomOf="@+id/titleNewsDetails" />
@@ -79,6 +84,7 @@
         android:layout_marginTop="5dp"
         android:text="Contenu"
         android:textSize="14sp"
+        android:textColor="?textColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recapNewsDetails" />
 

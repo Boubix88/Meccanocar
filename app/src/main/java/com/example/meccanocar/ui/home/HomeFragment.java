@@ -1,5 +1,6 @@
 package com.example.meccanocar.ui.home;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -17,8 +18,10 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.meccanocar.R;
 import com.example.meccanocar.databinding.FragmentHomeBinding;
-import com.example.meccanocar.model.SubCategory;
+import com.example.meccanocar.model.Item;
 import com.example.meccanocar.model.News;
+import com.example.meccanocar.model.manager.MeccanocarManager;
+import com.example.meccanocar.ui.adapter.LastItemAdapter;
 import com.example.meccanocar.ui.adapter.SubCategoryAdapter;
 import com.example.meccanocar.ui.adapter.NewsAdapter;
 import com.google.android.material.tabs.TabLayout;
@@ -30,7 +33,7 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private RecyclerView recyclerView;
-    private SubCategoryAdapter subCategoryAdapter;
+    private LastItemAdapter lastItemAdapter;
     private TextView textViewNoLastItem;
     private ViewPager2 viewPager;
     private List<News> newsList; // Votre liste de news
@@ -57,17 +60,20 @@ public class HomeFragment extends Fragment {
         // Récupération de la RecyclerView
         recyclerView = root.findViewById(R.id.recyclerViewHome);
 
-        // Liste des 5 derniers subCategories vus
-        List<SubCategory> subCategories = homeViewModel.getLast5ItemsViewed();
+        // Liste des 5 derniers items vus
+        List<Item> items = homeViewModel.getLast5ItemsViewed();
 
         // Création de l'adaptateur et liaison avec la ListView
-        subCategoryAdapter = new SubCategoryAdapter(subCategories, root);
-        recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext())); // A ajouter sinon rien ne s'affiche
-        recyclerView.setAdapter(subCategoryAdapter);
+        lastItemAdapter = new LastItemAdapter(items, root);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(root.getContext());
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL); // On met l'orientation à HORIZONTAL
+        layoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(layoutManager); // A ajouter sinon rien ne s'affiche
+        recyclerView.setAdapter(lastItemAdapter);
 
         //subCategoryAdapter.notifyDataSetChanged();
 
-        if (subCategories != null && subCategories.size() == 0) {
+        if (items != null && items.size() == 0) {
             textViewNoLastItem.setVisibility(View.VISIBLE);
         } else {
             textViewNoLastItem.setVisibility(View.GONE);

@@ -73,6 +73,7 @@ public class SubCategory implements Serializable {
                             .setRequiresCharging(false)// Set if charging is required to begin the download
                             .setAllowedOverMetered(true)// Set if download is allowed on Mobile network
                             .setAllowedOverRoaming(true)// Set if download is allowed on roaming network
+                            // On empeche l'ouverture automatique du pdf
                             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                             .setDestinationUri(Uri.fromFile(file));
 
@@ -81,18 +82,18 @@ public class SubCategory implements Serializable {
 
                     // Soumettre la demande de téléchargement au gestionnaire de téléchargement
                     if (downloadManager != null) {
-                        downloadManager.enqueue(request);
+                        // On récupère l'id du téléchargement
+                        downloadID = (int) downloadManager.enqueue(request);
                     }
-
-                    // On récupère l'id du téléchargement
-                    downloadID = (int) downloadManager.enqueue(request);
 
                     file = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), this.name + ".pdf");
                 } else {
                     finishDownload = true;
                 }
             } catch (Exception e) {
-                Log.e("[test]", "Exception thrown while stripping text", e);
+                //Log.e("[test]", "Exception thrown while stripping text", e);
+                e.printStackTrace();
+                return items;
             }
 
             // On attend que le téléchargement soit terminé
@@ -191,6 +192,7 @@ public class SubCategory implements Serializable {
                                 //System.out.println("[test]Point ? " + (String) parsedText.toString() + (String)text.getUnicode());
                             }
 
+                            // On ajoute le texte à la description et on incremente l'array si besoin
                             if (description.isEmpty()) {
                                 description.add(indexitem[0], text.getUnicode());
                             } else {
@@ -200,13 +202,15 @@ public class SubCategory implements Serializable {
                                     description.set(indexitem[0], description.get(indexitem[0]) + text.getUnicode());
                                 }
                             }
-                        }
-
-                        // On récupère le tableau de reference
-                        if (text.getHeight() > 5.0 && text.getHeight() < 5.4) {
+                        } else if (text.getHeight() > 5.0 && text.getHeight() < 5.4) { // On récupère le tableau de reference
                             /*System.out.print("[test]X : " + textX + " lastX : " + lastTextX[0] + " taille : " + text.getWidth());
                             System.out.print(" -- Nb colonne : " + indexTableCol[0] + " Nb ligne : " + indexTableRow[0]);
                             System.out.println(" -- " + text.getUnicode());*/
+
+                            // On incrmente l'array de description au cas ou l'item n'a pas de description pour maintenir la cohérence des index
+                            if (indexitem[0] >= description.size()) {
+                                description.add(indexitem[0], "");
+                            }
 
                             if (textX < lastTextX[0]) {
                                 // On repasse à la première colonne
@@ -273,7 +277,11 @@ public class SubCategory implements Serializable {
                 }
             } catch (IOException e) {
                 Log.e("[test]PdfBox-Android-Sample", "Exception thrown while stripping text", e);
-            } finally {
+            }  /*catch (IndexOutOfBoundsException e) {
+                // Gérer l'exception ici
+                e.printStackTrace(); // Imprimez la trace de la pile pour vous aider à identifier la cause
+                return items;
+            }*/ finally {
                 try {
                     if (document != null) document.close();
                 } catch (IOException e) {
@@ -305,8 +313,15 @@ public class SubCategory implements Serializable {
                     }
                 }
 
-                // On crée un nouvel item avec son nom et le lien de son pdf
-                Item item = new Item(itemTitle.get(k), description.get(k), tableTmp, images.get(k), context);
+                Item item = null;
+
+                try {
+                    // On crée un nouvel item avec son nom et le lien de son pdf
+                    item = new Item(itemTitle.get(k), description.get(k), tableTmp, images.get(k), context);
+                } catch (IndexOutOfBoundsException e) {
+                    e.printStackTrace();
+                    return items;
+                }
 
                 // On ajoute les items à la sous catégorie
                 items.add(item);

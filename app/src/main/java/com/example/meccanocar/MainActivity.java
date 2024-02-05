@@ -1,16 +1,15 @@
 package com.example.meccanocar;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
-import android.view.Window;
-import android.view.WindowManager;
 
+import com.example.meccanocar.utils.Language;
 import com.example.meccanocar.model.manager.MeccanocarManager;
 import com.example.meccanocar.ui.catalog.CatalogViewModel;
 import com.example.meccanocar.ui.home.HomeViewModel;
@@ -22,8 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+
 import com.example.meccanocar.databinding.ActivityMainBinding;
 
 import java.io.File;
@@ -41,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // On set la langue de l'application
+        Language.setLanguage(getResources());
+
         EXTERNAL_STORAGE_PATH = this.getExternalFilesDir("");
 
         // Vérification de la version d'Android
@@ -57,16 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        /*BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(binding.navView, navController);*/
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
@@ -106,6 +97,33 @@ public class MainActivity extends AppCompatActivity {
         catalogViewModel.setMeccanocarData(MeccanocarManager.getInstance());
 
         getSupportActionBar().hide(); // Masquer l'ActionBar
+    }
+
+    @Override
+    public Resources.Theme getTheme() {
+        com.example.meccanocar.utils.Settings settings = MeccanocarManager.getInstance().getSettings();
+        Resources.Theme theme = super.getTheme();
+
+        switch (settings.getTheme()) {
+            case "light":
+                theme.applyStyle(R.style.Theme_MeccanocarLight, true);
+                break;
+            case "dark":
+                theme.applyStyle(R.style.Theme_MeccanocarDark, true);
+                break;
+            case "auto":
+                switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
+                    case Configuration.UI_MODE_NIGHT_YES:
+                        theme.applyStyle(R.style.Theme_MeccanocarDark, true);
+                        break;
+                    case Configuration.UI_MODE_NIGHT_NO:
+                        theme.applyStyle(R.style.Theme_MeccanocarLight, true);
+                        break;
+                }
+                break;
+        }
+
+        return super.getTheme();
     }
 
     private NavOptions getNavOptions(@AnimRes int enterAnim, @AnimRes int exitAnim) {

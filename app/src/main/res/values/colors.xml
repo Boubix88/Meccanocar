@@ -9,9 +9,13 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green_100">#18903c</color>
     <color name="green_200">#00c883</color>
-    <color name="text_primary">#353535</color>
     <color name="status_bar">#FFFFFFFF</color>
 
+    <color name="text_primary">#353535</color>
     <color name="color_on_background_card">#FFFFFF</color>
     <color name="background">#ffffff</color>
+
+    <color name="colorBackground">#ffffff</color>
+    <color name="colorOnBackgroundCard">#FFFFFF</color>
+    <color name="textColor">#353535</color>
 </resources>

@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.settings.SettingsFragment"
-    android:background="@color/background">
+    android:background="?colorBackground">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageViewLogo"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginStart="-120dp"
@@ -19,7 +19,7 @@
         tools:layout_editor_absoluteY="0dp" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/imageViewBackgroudTitle"
         android:layout_width="200dp"
         android:layout_height="48dp"
         android:layout_marginTop="2dp"
@@ -29,7 +29,7 @@
         app:srcCompat="@color/green_100" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imageViewMinus"
         android:layout_width="60dp"
         android:layout_height="48dp"
         android:layout_marginTop="2dp"
@@ -37,7 +37,7 @@
         android:background="@drawable/header_background_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintEnd_toStartOf="@id/imageView3"
+        app:layout_constraintEnd_toStartOf="@id/imageViewBackgroudTitle"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/meccanocar_cercle_droite"
@@ -53,10 +53,107 @@
         android:text="@string/title_settings"
         android:textColor="#FFFFFF"
         android:textSize="28sp"
-        app:layout_constraintStart_toStartOf="@id/imageView3"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintEnd_toEndOf="@id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/imageView3"
+        app:layout_constraintStart_toStartOf="@id/imageViewBackgroudTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewBackgroudTitle"
+        app:layout_constraintEnd_toEndOf="@id/imageViewBackgroudTitle"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBackgroudTitle"
         app:layout_constraintVertical_bias="0.0" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputLayout"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:hint="@string/language_text"
+        android:background="?colorBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageViewBackgroudTitle"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/filled_exposed"
+            android:inputType="none"
+            android:textColor="?textColor">
+
+        </AutoCompleteTextView>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textViewLanguage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="10dp"
+        android:text="@string/language_text"
+        android:textSize="20sp"
+        android:textColor="?textColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/inputLayout" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputTheme"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:hint="@string/theme_text"
+        android:background="?colorBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/filled_exposed_theme"
+            android:inputType="none"
+            android:textColor="?textColor">
+
+        </AutoCompleteTextView>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textViewTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="10dp"
+        android:text="@string/theme_text"
+        android:textSize="20sp"
+        android:textColor="?textColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/inputTheme" />
+
+    <TextView
+        android:id="@+id/textViewVersionCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/version_code_text"
+        android:layout_marginTop="20dp"
+        android:textSize="14sp"
+        android:textColor="?textColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@+id/inputTheme"
+    />
+
+    <TextView
+        android:id="@+id/textViewVersionName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/version_name_text"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp"
+        android:textColor="?textColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@+id/textViewVersionCode"
+        />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

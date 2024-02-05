@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:text="Date"
         android:textSize="12sp"
+        android:textColor="?textColor"
         app:layout_constraintStart_toStartOf="@+id/imageViewNews"
         app:layout_constraintTop_toBottomOf="@+id/imageViewNews" />
 
@@ -34,9 +35,9 @@
         android:text="Titre"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="?textColor"
         app:layout_constraintStart_toStartOf="@+id/imageViewNews"
         app:layout_constraintTop_toBottomOf="@+id/dateNews"
-        app:layout_constraintEnd_toEndOf="parent"
     />
 
     <!-- Recap -->
@@ -46,10 +47,9 @@
         android:layout_height="wrap_content"
         android:text="Recapitulatif"
         android:textSize="14sp"
+        android:textColor="?textColor"
         android:layout_marginTop="5dp"
         app:layout_constraintStart_toStartOf="@+id/imageViewNews"
-        app:layout_constraintTop_toBottomOf="@+id/titleNews"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/titleNews" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

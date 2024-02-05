@@ -9,9 +9,13 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green_100">#18903c</color>
     <color name="green_200">#00c883</color>
-    <color name="text_primary">#EAEAEA</color>
     <color name="status_bar">#FF000000</color>
 
+    <color name="text_primary">#EAEAEA</color>
     <color name="color_on_background_card">#3C3C3C</color>
     <color name="background">#333333</color>
+
+    <color name="colorBackground">#333333</color>
+    <color name="colorOnBackgroundCard">#3C3C3C</color>
+    <color name="textColor">#EAEAEA</color>
 </resources>

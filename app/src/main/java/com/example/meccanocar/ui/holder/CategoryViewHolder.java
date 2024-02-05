@@ -175,7 +175,7 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder {
 
             // On applique l'animation sur toutes les catégories suivantes
             for (int i = positionOfClickedCategory; i < layoutManager.getItemCount() - 1; i++) {
-                System.out.println("[Category] Anim i : " + i);
+                //System.out.println("[Category] Anim i : " + i);
                 // Récupérer la vue de la catégorie suivante
                 View viewTmp = layoutManager.findViewByPosition(i + 1);
 
@@ -183,7 +183,7 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder {
                 if (viewTmp != null) {
                     viewTmp.startAnimation(slideUpCat);
                 } else {
-                    System.out.println("[Category] ViewTmp null");
+                    //System.out.println("[Category] ViewTmp null");
                 }
             }
         }

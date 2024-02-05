@@ -123,9 +123,6 @@ public class SubCategoryViewHolder extends RecyclerView.ViewHolder {
                                 // Ouvrir le PDF avec une application externe
                                 openPdfWithExternalApp(itemView.getContext(), subCategory.getLink());
 
-                                // On met a jour la liste des 5 derniers subCategories vus
-                                MeccanocarManager.getInstance().updateLast5ItemsViewed(subCategory);
-
                                 // On affiche la recyclerView des categories
                                 recyclerView.setVisibility(View.VISIBLE);
                             } else {
@@ -155,6 +152,9 @@ public class SubCategoryViewHolder extends RecyclerView.ViewHolder {
                                     Context context = itemView.getContext();
                                     Intent intent = new Intent(context, ItemsDetailsActivity.class);
                                     intent.putExtra("item", selectedItem); // On passe l'objet item à l'activité
+
+                                    // On met a jour la liste des 5 derniers subCategories vus
+                                    MeccanocarManager.getInstance().updateLast5ItemsViewed(selectedItem);
 
                                     context.startActivity(intent);
                                 }
@@ -187,9 +187,6 @@ public class SubCategoryViewHolder extends RecyclerView.ViewHolder {
                 if (subCategory != null && subCategory.getLink() != null) {
                     // Déclencher le téléchargement du PDF
                     downloadPdf(subCategory.getLink(), subCategory.getName());
-
-                    // On met a jour la liste des 5 derniers subCategories vus
-                    MeccanocarManager.getInstance().updateLast5ItemsViewed(subCategory);
 
                     Toast.makeText(subCategoryView.getContext(), R.string.download_pdf_text, Toast.LENGTH_SHORT).show();
                 } else {
@@ -241,6 +238,8 @@ public class SubCategoryViewHolder extends RecyclerView.ViewHolder {
         if (downloadManager != null) {
             downloadManager.enqueue(request);
         }
+
+        System.out.println("[test] Téléchargement : " + downloadManager.getUriForDownloadedFile(downloadManager.enqueue(request)));
     }
 
     public void afficher(SubCategory subCategory) {

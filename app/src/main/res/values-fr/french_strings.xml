@@ -3,6 +3,6 @@
     <string name="app_name">Meccanocar</string>
     <string name="title_home">Accueil</string>
     <string name="title_catalog">Catalogue</string>
-    <string name="title_settings">Parametres</string>
+    <string name="title_settings">Paramètres</string>
     <string name="back_text">Retour</string>
 </resources>

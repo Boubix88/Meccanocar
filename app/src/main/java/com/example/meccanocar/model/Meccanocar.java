@@ -1,10 +1,12 @@
 package com.example.meccanocar.model;
 
 import android.content.Context;
-
+import java.lang.reflect.Modifier;
 import com.example.meccanocar.model.listener.DescriptionCallback;
 import com.example.meccanocar.model.listener.NewsLoadListener;
+import com.example.meccanocar.utils.Settings;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.jsoup.Jsoup;
@@ -32,14 +34,21 @@ public class Meccanocar {
     private String newsUrl = "/fr/news";
     private Catalog catalog;
     private ArrayList<News> news;
-    private ArrayList<SubCategory> last5ItemsViewed;
+    private ArrayList<Item> last5ItemsViewed;
     private Context context;
+    private Settings settings;
 
     public Meccanocar(Context context) {
         this.context = context;
         this.catalog = new Catalog(URL, context);
         this.news = new ArrayList<>();
         this.last5ItemsViewed = new ArrayList<>();
+        this.settings = new Settings("auto", "auto", context);
+        this.settings = Settings.loadSettings();
+    }
+
+    public Settings getSettings() {
+        return this.settings;
     }
 
     public Catalog getCatalog() {
@@ -50,13 +59,17 @@ public class Meccanocar {
         return this.news;
     }
 
-    public ArrayList<SubCategory> getLast5ItemsViewed() {
+    public ArrayList<Item> getLast5ItemsViewed() {
         return last5ItemsViewed;
     }
 
     public void saveLast5ItemsViewedToJson() {
         // Convertir last5ItemsViewed en format JSON
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation() // Ignorer les champs sans l'annotation @Expose
+                .excludeFieldsWithModifiers(Modifier.TRANSIENT) // Ignorer les champs marqués comme transient
+                .create();
+
         String json = gson.toJson(last5ItemsViewed);
 
         // Écrire le JSON dans un fichier
@@ -78,7 +91,7 @@ public class Meccanocar {
 
     public void loadLast5ItemsViewedFromJson() {
         Gson gson = new Gson();
-        Type listType = new TypeToken<ArrayList<SubCategory>>() {
+        Type listType = new TypeToken<ArrayList<Item>>() {
         }.getType();
 
         // Lecture du JSON depuis le fichier
@@ -88,6 +101,11 @@ public class Meccanocar {
             try {
                 BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
                 last5ItemsViewed = gson.fromJson(bufferedReader, listType);
+
+                // Réinitialise le context après la désérialisation
+                for (Item item : last5ItemsViewed) {
+                    item.setContext(context);
+                }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -98,10 +116,19 @@ public class Meccanocar {
         }
     }
 
-    public void updateLast5ItemsViewed(SubCategory subCategory) {
-        // Ajouter l'subCategory à la liste
-        if (!last5ItemsViewed.contains(subCategory)) {
-            last5ItemsViewed.add(subCategory);
+    public void updateLast5ItemsViewed(Item item) {
+        // Ajouter l'item à la liste si elle n'est pas déjà présente
+        boolean itemAlreadyInList = false;
+        for (Item i : last5ItemsViewed) {
+            if (i.getName().equals(item.getName())) {
+                itemAlreadyInList = true;
+                break;
+            }
+        }
+
+        // Ajouter l'item à la liste si elle n'est pas déjà présente
+        if (!itemAlreadyInList) {
+            last5ItemsViewed.add(item);
         }
 
         // Supprimer le premier subCategory de la liste si elle contient plus de 5 items
@@ -110,7 +137,7 @@ public class Meccanocar {
         }
 
         // Sauvegarder la liste dans le fichier JSON
-        //saveLast5ItemsViewedToJson();
+        saveLast5ItemsViewedToJson();
     }
 
     public void getNewsFromHttp(final NewsLoadListener listener) {

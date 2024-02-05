@@ -8,16 +8,22 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.annotations.Expose;
+
 import java.io.ByteArrayOutputStream;
 
 public class Item implements Parcelable {
     private static final long serialVersionUID = 1L;
 
+    @Expose
     private String name;
+    @Expose
     private String description;
+    @Expose
     private String[][] tabRef;
+    @Expose
     private byte[] bmp;
-    private Context context;
+    private transient Context context;
 
     public Item(String n, String d, String[][] r, Bitmap bmp, Context context) {
         this.name = n;
@@ -44,6 +50,12 @@ public class Item implements Parcelable {
         bmp = in.createByteArray();
     }
 
+    // Méthode pour réinitialiser le context après la désérialisation
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    @Expose(serialize = false, deserialize = false)
     public static final Creator<Item> CREATOR = new Creator<Item>() {
         @Override
         public Item createFromParcel(Parcel in) {
@@ -94,7 +106,7 @@ public class Item implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(@NonNull Parcel parcel, int i) {
+    public void writeToParcel(@NonNull Parcel parcel, int flags) {
         parcel.writeString(name);
         parcel.writeString(description);
 
