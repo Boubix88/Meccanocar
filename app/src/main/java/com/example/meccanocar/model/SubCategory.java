@@ -148,6 +148,7 @@ public class SubCategory implements Serializable {
                         float upperLimit = 60.0f;  // Ajustez cela en fonction de vos observations
                         float lowerLimit = 800.0f;  // Les valeurs négatives sont en bas de la page
                         float leftLimit = 30.0f;  // Ajustez cela en fonction de vos observations
+                        float rightLimit = 30.0f;  // Ajustez cela en fonction de vos observations
 
                         // Vérifier si la position verticale est dans la zone à exclure
                         float textY = text.getYDirAdj();
@@ -155,18 +156,34 @@ public class SubCategory implements Serializable {
 
 
                         // Ignorer le texte dans la zone exclue
-                        if (textY <= upperLimit || textY >= lowerLimit || text.getXDirAdj() <= leftLimit) {
+                        if (textY <= upperLimit || textY >= lowerLimit || text.getXDirAdj() <= leftLimit || text.getXDirAdj() >= text.getPageWidth() - rightLimit) {
                             return;
                         }
 
                         super.processTextPosition(text);
 
 
+                        System.out.println("[test]Texte : " + text.getUnicode() + " -- Taille : " + text.getHeight() + " diff h " + (text.getY() - lastTextY[0]));
+
                         // nom de l'item
                         if (text.getHeight() > 8.0) {
                             // On mets à jour l'index si on change d'item
                             if (text.getFont().getName().contains("Bold") && lastheight[0] != text.getHeight()) { // ATTENTION derniere condition a l'arrache sinon buga avec tableau dans pdf collage
                                 indexitem[0]++;
+
+                                // On ajoute un nouveau tableau si l'arry est vide ou si on est passé à la colonne suivante sinon on rempli le tableau courant
+                                if (allTable.isEmpty() || indexitem[0] >= allTable.size()) {
+                                    String[][] table = new String[10][60]; // Mettre dynamiquement la taille
+
+                                    // Boucle pour initialiser chaque élément avec une chaîne vide
+                                    for (int i = 0; i < table.length; i++) {
+                                        for (int j = 0; j < table[i].length; j++) {
+                                            table[i][j] = "";
+                                        }
+                                    }
+
+                                    allTable.add(table);
+                                }
 
                                 indexTableRow[0] = 0;
 
@@ -186,12 +203,7 @@ public class SubCategory implements Serializable {
                                     itemTitle.set(indexitem[0], itemTitle.get(indexitem[0]) + text.getUnicode());
                                 }
                             }
-                        } else if (text.getHeight() > 5.4) { // description de l'item
-                            if (text.getUnicode().equals("•")) {
-                                //description.get(indexitem) += "--";
-                                //System.out.println("[test]Point ? " + (String) parsedText.toString() + (String)text.getUnicode());
-                            }
-
+                        } else if (text.getHeight() > 5.4 && !(text.getFont().getName().contains("Bold") && text.getHeight() >= 5.8 && text.getHeight() <= 5.9)) { // description de l'item si different de tableau caractéristique
                             // On ajoute le texte à la description et on incremente l'array si besoin
                             if (description.isEmpty()) {
                                 description.add(indexitem[0], text.getUnicode());
@@ -202,7 +214,7 @@ public class SubCategory implements Serializable {
                                     description.set(indexitem[0], description.get(indexitem[0]) + text.getUnicode());
                                 }
                             }
-                        } else if (text.getHeight() > 5.0 && text.getHeight() < 5.4) { // On récupère le tableau de reference
+                        } else if (text.getHeight() > 5.0 && text.getHeight() < 5.4 || (text.getFont().getName().contains("Bold") && text.getHeight() >= 5.8 && text.getHeight() <= 5.9)) { // On récupère le tableau de reference et tableau caractéristique
                             /*System.out.print("[test]X : " + textX + " lastX : " + lastTextX[0] + " taille : " + text.getWidth());
                             System.out.print(" -- Nb colonne : " + indexTableCol[0] + " Nb ligne : " + indexTableRow[0]);
                             System.out.println(" -- " + text.getUnicode());*/
@@ -222,6 +234,16 @@ public class SubCategory implements Serializable {
                                 indexTableCol[0]++;
                             }
 
+                            // On increment le nombre de ligne si on tombe sur un tableau de caractéristique
+                            if (text.getFont().getName().contains("Bold") && text.getHeight() >= 5.8 && text.getHeight() <= 5.9 && lastheight[0] != text.getHeight()) {
+                                indexTableRow[0]++;
+                            }
+
+                            // On increment le nombre de ligne si on tombe sur un tableau de pieces de rechange
+                            if (text.getFont().getName().contains("Bold") && text.getHeight() >= 5.0 && text.getHeight() <= 5.1 && lastheight[0] != text.getHeight() && text.getUnicode().equals("P")) {
+                                indexTableRow[0]++;
+                            }
+
                             // Incrémentation du numéro de ligne si nécessaire
                             if (textY > lastTextY[0] + (text.getHeight() * 2)) {
                                 indexTableRow[0]++;
@@ -234,20 +256,6 @@ public class SubCategory implements Serializable {
 
                             if (indexTableRow[0] > nbRow.get(indexitem[0])) {
                                 nbRow.set(indexitem[0], indexTableRow[0]);
-                            }
-
-                            // On ajoute un nouveau tableau si l'arry est vide ou si on est passé à la colonne suivante sinon on rempli le tableau courant
-                            if (allTable.isEmpty() || indexitem[0] >= allTable.size()) {
-                                String[][] table = new String[10][30]; // Mettre dynamiquement la taille
-
-                                // Boucle pour initialiser chaque élément avec une chaîne vide
-                                for (int i = 0; i < table.length; i++) {
-                                    for (int j = 0; j < table[i].length; j++) {
-                                        table[i][j] = "";
-                                    }
-                                }
-
-                                allTable.add(table);
                             }
 
                             // Ajout du texte à la case courante du tableau

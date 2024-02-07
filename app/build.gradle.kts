@@ -19,11 +19,19 @@ fun getVersionCode(): Int {
 
 fun getVersionName(): String {
     return try {
-        val process = ProcessBuilder("git", "describe", "--tags", "--dirty").start()
-        val reader = BufferedReader(InputStreamReader(process.inputStream))
-        val name = reader.readLine()?.trim() ?: "1.0.0"
-        process.waitFor()
-        name
+        val process1 = ProcessBuilder("git", "log", "--stat", "--summary").start()
+        val reader1 = BufferedReader(InputStreamReader(process1.inputStream))
+        var totalFilesModified = 0
+        var line: String?
+        while (reader1.readLine().also { line = it } != null) {
+            if (line!!.contains("files changed,")) {
+                val filesChanged = line!!.substringBefore("files changed,").trim()
+                totalFilesModified += filesChanged.toInt()
+            }
+        }
+        process1.waitFor()
+        val versionName = (totalFilesModified.toFloat() / 1000.0).toString()
+        versionName
     } catch (ignored: Exception) {
         "1.0.0"
     }

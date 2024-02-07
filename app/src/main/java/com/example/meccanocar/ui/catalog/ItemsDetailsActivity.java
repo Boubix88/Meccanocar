@@ -17,10 +17,15 @@ import com.example.meccanocar.utils.Language;
 import com.example.meccanocar.model.manager.MeccanocarManager;
 import com.example.meccanocar.utils.Settings;
 
+import java.util.ArrayList;
+
 public class ItemsDetailsActivity extends AppCompatActivity {
     private ImageView imageView;
     private TextView titleTextView;
     private TextView descriptionTextView;
+
+    private ArrayList<TableLayout> tableLayouts = new ArrayList<>();
+    private int indexTab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,18 @@ public class ItemsDetailsActivity extends AppCompatActivity {
         imageView = findViewById(R.id.imageViewItemsDetails);
         titleTextView = findViewById(R.id.titleItemsDetails);
         descriptionTextView = findViewById(R.id.descriptionItemsDetails);
+
+        indexTab = 0;
+
+        // Récupérer la référence du TableLayout
+        TableLayout tableLayout = findViewById(R.id.tableLayoutItemsDetails);
+
+        // On recupère la référence du tableau de caractéristiques
+        TableLayout tableLayoutCara = findViewById(R.id.tableLayoutCaracteristic);
+
+        // On ajoute les tableaux à la liste
+        tableLayouts.add(tableLayout);
+        tableLayouts.add(tableLayoutCara);
 
         // Récupérer l'ID de l'item depuis l'intent
         if (getIntent() != null && getIntent().hasExtra("item")) {
@@ -73,26 +90,51 @@ public class ItemsDetailsActivity extends AppCompatActivity {
     }
 
     public void setTabRef(String[][] tabRef) {
-        // Récupérer la référence du TableLayout
-        TableLayout tableLayout = findViewById(R.id.tableLayoutItemsDetails);
-
-        // Boucle à travers les colonnes (changement ici)
+        // Boucle à travers les lignes
         for (int j = 0; j < tabRef[0].length; j++) {
+            System.out.println("[test] Case : " + tabRef[0][j]);
             TableRow tableRow = new TableRow(this);
 
-            // Boucle à travers les lignes (changement ici)
+            // On change de tableau si la première case est vide
+            if (tabRef[0][j].isEmpty()) {
+                indexTab++;
+            }
+
+            // Boucle à travers les colonnes
             for (int i = 0; i < tabRef.length; i++) {
+                // On saute la case si elle est vide
+                if (tabRef[i][j].isEmpty()) {
+                    continue;
+                }
+
                 TextView textView = new TextView(this);
-                if (j == 0) {
-                    textView.setBackground(getDrawable(R.drawable.tableborderheader));
+
+                // Première ligne du tableau de reférence ou deuxieme ligne du tableau de pièces de rechange
+                if (j == 0 && tabRef[0][0].equals("Code") || (j - 1 >= 0 && tabRef[0][j - 1].contains("Pièces"))) {
+                    textView.setBackground(getDrawable(R.drawable.table_border_header_ref));
                     // On met le texte en gras
                     textView.setTextAppearance(R.style.frag1HeaderCol);
-                } else {
+                } else if (tabRef[0][j].contains("Caractéristiques techniques")) { // Premiere ligne du tableau de caractéristiques
+                    textView.setBackground(getDrawable(R.drawable.table_border_header_caracteristic));
+                    // On met le texte en gras
+                    textView.setTextAppearance(R.style.frag1HeaderCol);
+                    TableRow.LayoutParams layoutParams = new TableRow.LayoutParams();
+                    layoutParams.span = tabRef.length; // La première colonne prend 2 cases
+                    textView.setLayoutParams(layoutParams);
+                } else if (tabRef[0][j].contains("Pièces")) { // Premiere ligne du tableau de pièces de rechange
+                    textView.setBackground(getDrawable(R.drawable.table_border_header_piece));
+                    // On met le texte en gras
+                    textView.setTextAppearance(R.style.frag1HeaderCol);
+                    TableRow.LayoutParams layoutParams = new TableRow.LayoutParams();
+                    layoutParams.span = tabRef.length; // La première colonne prend 2 cases
+                    textView.setLayoutParams(layoutParams);
+                } else { // cases normales
                     textView.setBackground(getDrawable(R.drawable.tableborder));
                 }
+
                 textView.setGravity(Gravity.CENTER);
                 textView.setTextColor(getResources().getColor(R.color.black));
-                textView.setTextSize(14);
+                textView.setTextSize(10);
 
                 // Configurez le style et le texte du TextView
                 textView.setText(tabRef[i][j]);
@@ -102,7 +144,7 @@ public class ItemsDetailsActivity extends AppCompatActivity {
             }
 
             // Ajoutez la ligne au TableLayout
-            tableLayout.addView(tableRow);
+            tableLayouts.get(indexTab).addView(tableRow);
         }
     }
 

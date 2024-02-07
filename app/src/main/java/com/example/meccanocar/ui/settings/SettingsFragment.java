@@ -31,11 +31,8 @@ public class SettingsFragment extends Fragment {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // On récupère la version de l'application
-        //int versionCode = BuildConfig.VERSION_CODE;
-        //String versionName = BuildConfig.VERSION_NAME;
-        //String versionCode = AppInfo.getAppVersionCode(getContext());
-        String versionCode = "0.349"; // A chaque commit on rajooute le nombre de fichiers modifiés + 0.0 (ex : 0.0 + 53 = 0.053)
+        // On recupère la version de l'application
+        String versionCode = AppInfo.getAppVersionCode(getContext()); // A chaque commit on rajooute le nombre de fichiers modifiés + 0.0 (ex : 0.0 + 53 = 0.053)
         String versionName = AppInfo.getAppVersionName(getContext());
 
         // On affiche la version de l'application
